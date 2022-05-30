@@ -17,7 +17,7 @@ import {
   Text,
   useColorScheme,
   View,
-  ActivityIndicator ,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -29,41 +29,39 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input,Image } from "@rneui/themed";
-
-
+import { Input, Image } from "@rneui/themed";
 
 const App = () => {
-  
 
   return (
     <SafeAreaProvider>
-      <Image
-        source={{ uri: 'https://www.latelier-immo.fr/public/img/medium/f948bd5e2b38e4853948994e2c7c9eab.jpg' }}
-        containerStyle={styles.item}
-        PlaceholderContent={<ActivityIndicator />}
-      />
-      <Input placeholder='Email'/>
-      <Input placeholder='Mot de passe'/>
+      <View style={styles.container}>
+        <Image
+          source={require('./public/images/logo_immopport1.webp')}
+          containerStyle={styles.image}
+        />
+      </View>
 
-      
+      <Input placeholder='Email' />
+      <Input placeholder='Mot de passe' />
+
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  
-  item: {
-    aspectRatio: 1,
-    width: '20%',
+  container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    padding: 24,
   },
-  });
 
-
-
-
+  image: {
+    aspectRatio: 1,
+    width: '100%',
+    textAlign: "center",
+    marginTop: 16,
+    paddingVertical: 8,
+  },
+});
 
 export default App;
