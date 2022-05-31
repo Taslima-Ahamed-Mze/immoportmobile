@@ -9,59 +9,17 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  ActivityIndicator,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input, Image } from "@rneui/themed";
+import Login from './src/Screens/Login';
+
+
 
 const App = () => {
 
   return (
-    <SafeAreaProvider>
-      <View style={styles.container}>
-        <Image
-          source={require('./public/images/logo_immopport1.webp')}
-          containerStyle={styles.image}
-        />
-      </View>
-
-      <Input placeholder='Email' />
-      <Input placeholder='Mot de passe' />
-
-    </SafeAreaProvider>
+    <Login />
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-  },
-
-  image: {
-    aspectRatio: 1,
-    width: '100%',
-    textAlign: "center",
-    marginTop: 16,
-    paddingVertical: 8,
-  },
-});
 
 export default App;
