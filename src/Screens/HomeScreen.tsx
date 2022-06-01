@@ -6,11 +6,22 @@ import { getProfile } from '../Api/Auth';
 import AuthContext from '../Contexts/AuthContext';
 import Employee from '../Interfaces/Employee';
 
+import HeaderComponent from '../Components/Header';
+import CardDashboard from '../Components/CardDashboard';
+
 const styles = StyleSheet.create({
     text: {
         color: "black"
     }
 })
+
+const images = {
+    note : require('../../Assets/images/note.png'),
+    agenda : require('../../Assets/images/agenda.png'),
+    doc : require('../../Assets/images/docs.png'),
+    logout : require('../../Assets/images/logout.jpg'),
+
+};
 const HomeScreen = ({ navigation }: any) => {
     const MMKV = new MMKVLoader().initialize()
 
@@ -46,6 +57,16 @@ const HomeScreen = ({ navigation }: any) => {
                 title="Go to Home"
                 onPress={() => navigation.navigate('Login')}
             />
+{/*             Dashbord à fusionner avec les données de l'utilisateur connecté
+ */}             <View style={{padding:10}}>
+                <HeaderComponent />
+                <CardDashboard  title='Prospections' image={images.note} />
+                <CardDashboard  title='Agenda' image={images.agenda}/>
+                <CardDashboard title='Documents' image={images.doc}/>
+                <CardDashboard  title='Déconnexion' image={images.logout}/>
+
+
+            </View>
         </View>
     )
 }

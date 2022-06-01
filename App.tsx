@@ -6,6 +6,7 @@ import LoginScreen from './src/Screens/LoginScreen'
 import HomeScreen from './src/Screens/HomeScreen'
 import AuthContext from './src/Contexts/AuthContext'
 import CalendarScreen from './src/Screens/CalendarScreen'
+import Prospections from './src/Screens/ProspectionScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -21,6 +22,12 @@ function App() {
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Connexion' }} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Bonjour' }} />
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ title: 'Calendrier' }} />
+        <Stack.Screen  name="ProspectionScreen" component={Prospections}/>
+          <Image
+      style={{ width: 50, height: 50 }}
+      source={require('./Assets/images/logo_immopport1.webp')}
+    />
+      
       </Stack.Navigator>
     </NavigationContainer>
   )
