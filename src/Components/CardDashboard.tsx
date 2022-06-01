@@ -25,30 +25,18 @@ const styles = StyleSheet.create({
 })
 
 
-/* function cardClick(){
-    const navigation = useNavigation();
-
-    navigation.navigate('LoginScreen')
-    console.log(navigation);
-    
-
-} */
-
 const CardDashboard = (cardContent:any)=>{
-    const navigation = useNavigation();
     return (
-        <Pressable onPress={()=>navigation.navigate('ProspectionScreen')}>
 
-            <Card  borderRadius={18} containerStyle={{elevation:0, borderColor:'#ef3a5d',height:150}}>    
-                <View style={styles.cardView} >
-                    <Image
-                        style={styles.image}
-                        source={cardContent.image}
-                    />
-                    <Text  style={styles.text}>{cardContent.title}</Text>
-                </View>    
-            </Card>
-        </Pressable>
+        <Card  borderRadius={18} containerStyle={{elevation:0, borderColor:'#ef3a5d',height:150}}>    
+            <View style={styles.cardView} >
+                <Image
+                    style={styles.image}
+                    source={cardContent.image}
+                />
+                <Text  style={styles.text}>{cardContent.title}</Text>
+            </View>    
+        </Card>
     );
 }
 
