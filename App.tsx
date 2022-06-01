@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './src/Screens/Login';
 import HomeScreen from './src/Screens/Home';
+import Prospections from './src/Screens/Prospections';
 
 // function HomeScreen({ navigation }) {
 //   return (
@@ -54,8 +55,12 @@ function App() {
       style={{ width: 50, height: 50 }}
       source={require('./Assets/images/logo_immopport1.webp')}
     />
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="LoginScreen" component={HomeScreen}/>
+      <Stack.Navigator  initialRouteName="Home">
+        <Stack.Screen  name="Home" component={HomeScreen}/>
+        <Stack.Screen  name="LoginScreen" component={LoginScreen}/>
+        <Stack.Screen  name="ProspectionScreen" component={Prospections}/>
+
+
         {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: (props) => <LogoTitle {...props} /> }} />
         <Stack.Screen name="Details" component={DetailsScreen} options={{ headerTitle: (props) => <LogoTitle {...props} /> }} /> */}
       </Stack.Navigator>

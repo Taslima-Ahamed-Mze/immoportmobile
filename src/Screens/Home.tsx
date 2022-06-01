@@ -3,23 +3,18 @@ import { Header,Card } from "@rneui/themed";
 import { Image, Button, View, Text } from 'react-native';
 
 import HeaderComponent from '../Components/Header';
-import { CardDivider } from '@rneui/base/dist/Card/Card.Divider';
-
-const CardDashboard = ()=>{
-    return (
-        <Card  borderRadius={20} containerStyle={{elevation:0, borderColor:'#ef3a5d',height:150}}>    
-            <View style={{display: 'flex', flexDirection:'row',justifyContent: 'center', alignItems: 'center',margin:30}} >
-                <Image
-                    style={{ width: 75, height: 50}}
-                    source={require('../../Assets/images/note.png')}
-                />
-                <Text  style={{ color:'black',fontWeight: 'bold', fontSize: 25}}>Prospections</Text>
-            </View>    
-        </Card>
-    );
-}
+import CardDashboard from '../Components/CardDashboard';
 
 
+
+
+const images = {
+    note : require('../../Assets/images/note.png'),
+    agenda : require('../../Assets/images/agenda.png'),
+    doc : require('../../Assets/images/docs.png'),
+    logout : require('../../Assets/images/logout.jpg'),
+
+};
 
 const Home = () => {
 
@@ -27,13 +22,11 @@ const Home = () => {
         
         <View style={{padding:10}}>
             <HeaderComponent />
-            <CardDashboard />
-            <CardDashboard />
-            <CardDashboard />
-            <CardDashboard />
+            <CardDashboard  title='Prospections' image={images.note} />
+            <CardDashboard  title='Agenda' image={images.agenda}/>
+            <CardDashboard title='Documents' image={images.doc}/>
+            <CardDashboard  title='Déconnexion' image={images.logout}/>
 
-
-            
 
         </View>
     );
