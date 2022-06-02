@@ -1,9 +1,10 @@
+import { Text } from '@rneui/base';
 import React from 'react';
-import { View, Button,Text, ScrollView} from 'react-native';
+import { View, Button,ScrollView} from 'react-native';
 import HeaderComponent from '../Components/Header';
 import FooterComponent from '../Components/Footer';
 
-const CalendarScreen = ({ navigation }: any) => {
+const DocumentScreen = ({ navigation }: any) => {
 
     return (
         <View style={{ flex: 1,padding:10}}>
@@ -14,7 +15,6 @@ const CalendarScreen = ({ navigation }: any) => {
                 <FooterComponent />
             </View>
         </View>
-        
     )
 }
-export default CalendarScreen;
+export default DocumentScreen;
