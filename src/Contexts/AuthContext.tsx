@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react"
 import { MMKVLoader } from "react-native-mmkv-storage";
+import { getProfile, logoutProfile } from "../Api/Auth";
 import Children from "../Interfaces/Children";
 import LoggedEmployee from "../Interfaces/LoggedEmployee";
 
@@ -26,8 +27,6 @@ export const AuthProvider = ({ children }: Children) => {
     const [matricule, setMatricule] = useState<undefined>(undefined)
     const [isLoggedIn, setLoggedIn] = useState(() => {
         const token = MMKV.getStringAsync("access_token")
-
-        console.log("token: " + token)
         return token != null
     })
 
@@ -36,6 +35,7 @@ export const AuthProvider = ({ children }: Children) => {
     }
 
     const logout = () => {
+        logoutProfile()
         setIdAgency(undefined)
         setLastname(undefined)
         setFirstname(undefined)

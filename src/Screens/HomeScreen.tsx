@@ -4,7 +4,6 @@ import { View, Button, Text, StyleSheet } from 'react-native';
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import { getProfile } from '../Api/Auth';
 import AuthContext from '../Contexts/AuthContext';
-import Employee from '../Interfaces/Employee';
 
 const styles = StyleSheet.create({
     text: {
@@ -15,20 +14,26 @@ const HomeScreen = ({ navigation }: any) => {
     const MMKV = new MMKVLoader().initialize()
 
     const [token, setToken] = React.useState<string | null>()
-    const [dataProfile, setDataProfile] = React.useState<Employee>() // old et new datas
+    // const [dataProfile, setDataProfile] = React.useState<Employee>()
     const user = React.useContext(AuthContext)
+
     React.useEffect(() => {
 
-        if (token != null) {
+        if (typeof token == "string") {
             getProfile(token)
                 .then(response => {
-                    setDataProfile(response)
                     user.login()
+                    console.log(response)
                     user.lastname = response.lastname
                     user.firstname = response.firstname
+                    user.id_agency = response.id_agency
+                    user.mail = response.mail
+                    user.matricule = response.matricule
+                    user.phone = response.phone
+                    user.isLoggedIn = true
+
                 })
         } else {
-            console.log('token is null')
             MMKV.getStringAsync("access_token").then(token => {
                 if (typeof token == "string") {
                     setToken(token)
@@ -39,12 +44,28 @@ const HomeScreen = ({ navigation }: any) => {
 
     }, [token])
 
+    const handleLogout = () => {
+        user.logout
+        // logoutProfile()
+        // setToken(null)
+
+        // navigation.navigate("Login")
+        // console.log("handlelogout")
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }],
+        });
+
+    }
+
     return (
         <View>
-            <Text style={styles.text}>{dataProfile?.firstname} {dataProfile?.lastname}</Text>
+            {user &&
+                <Text style={styles.text}>{user?.firstname} {user?.lastname} - {user?.matricule}</Text>
+            }
             <Button
-                title="Go to Home"
-                onPress={() => navigation.navigate('Login')}
+                title="Déconnexion"
+                onPress={handleLogout}
             />
         </View>
     )
