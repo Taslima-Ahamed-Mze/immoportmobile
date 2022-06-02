@@ -7,6 +7,7 @@ import {
     Text,
 } from 'react-native'
 import { login } from '../Api/Auth'
+import AuthContext from '../Contexts/AuthContext'
 import Login from '../Interfaces/Login'
 
 const styles = StyleSheet.create({
