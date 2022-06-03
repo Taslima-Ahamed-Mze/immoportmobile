@@ -8,6 +8,7 @@ import AuthContext from './src/Contexts/AuthContext'
 import CalendarScreen from './src/Screens/CalendarScreen'
 import ProspectionScreen from './src/Screens/ProspectionScreen'
 import DocumentScreen from './src/Screens/DocumentScreen'
+import { Calendar } from 'react-native-calendars'
 
 const Stack = createNativeStackNavigator()
 
