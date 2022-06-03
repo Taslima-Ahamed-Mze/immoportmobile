@@ -1,11 +1,12 @@
 import { Card, CheckBox } from '@rneui/base';
-import React, { useState } from 'react';
-import { Alert, Button, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, BackHandler, Button, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { createProperty } from '../Api/Property';
 import FooterComponent from '../Components/Footer';
 import Property from '../Interfaces/Property';
 
 const styles = StyleSheet.create({
+
     label: {
         color: "#c51e1e",
         fontWeight: "bold",
@@ -35,15 +36,54 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "red",
         marginTop: 20
+    },
+
+    buttonAction: {
+        borderRadius: 20,
+        borderColor: "black",
+        borderWidth: 1,
+        marginBottom: 20,
+        marginTop: 10,
+        padding: 10,
+        width: 200,
     }
 })
 
 const ProspectionFormScreen = ({ }) => {
+
+    const [viewType, setViewType] = useState(1);
+
+    const backAction = () => {
+        // condition is true when It is showing card 2 or card 3 on back press
+        if (viewType > 1) {
+            setViewType(viewType - 1);
+            return true;
+        }
+        // let the default thing happen
+        return false;
+    };
+
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", backAction);
+
+        return () =>
+            BackHandler.removeEventListener("hardwareBackPress", backAction);
+    }, []);
+
+    const first = () => {
+        setViewType(1);
+    };
+    const second = () => {
+        setViewType(2);
+    };
+    const third = () => {
+        setViewType(3);
+    };
+
     const [check1, setCheck1] = useState(false);
     const [check2, setCheck2] = useState(false);
     const [check3, setCheck3] = useState(false);
     const [check4, setCheck4] = useState(false);
-
 
     const [name, setName] = useState<string | undefined>()
     const [price, setPrice] = useState<number | undefined>()
@@ -114,7 +154,6 @@ const ProspectionFormScreen = ({ }) => {
             setFormError("Le formulaire ne peut être vide!")
         }
 
-
     }
 
     return (
@@ -122,136 +161,178 @@ const ProspectionFormScreen = ({ }) => {
             <ScrollView>
 
                 <View style={{ padding: 20, backgroundColor: "white" }}>
-                    <Text style={styles.label}>Type de bien</Text>
 
-                    <CheckBox
-                        title="Maison"
-                        checked={check1}
-                        onPress={() => setCheck1(!check1)}
-                        checkedColor="#c51e1e"
-                    />
-                    <CheckBox
-                        title="Appartement"
-                        checked={check2}
-                        onPress={() => setCheck2(!check2)}
-                        checkedColor="#c51e1e"
-                    />
-                    <CheckBox
-                        title="Studio"
-                        checked={check3}
-                        onPress={() => setCheck3(!check3)}
-                        checkedColor="#c51e1e"
-                    />
-                    <CheckBox
-                        title="Terrain"
-                        checked={check4}
-                        onPress={() => setCheck4(!check4)}
-                        checkedColor="#c51e1e"
-                    />
+                    {/* 1st step */}
+                    {viewType === 1 &&
+                        <View>
+                            <Text style={styles.label}>Type de bien</Text>
+
+                            <CheckBox
+                                title="Maison"
+                                checked={check1}
+                                onPress={() => setCheck1(!check1)}
+                                checkedColor="#c51e1e"
+                            />
+                            <CheckBox
+                                title="Appartement"
+                                checked={check2}
+                                onPress={() => setCheck2(!check2)}
+                                checkedColor="#c51e1e"
+                            />
+                            <CheckBox
+                                title="Studio"
+                                checked={check3}
+                                onPress={() => setCheck3(!check3)}
+                                checkedColor="#c51e1e"
+                            />
+                            <CheckBox
+                                title="Terrain"
+                                checked={check4}
+                                onPress={() => setCheck4(!check4)}
+                                checkedColor="#c51e1e"
+                            />
+
+                            <Text style={styles.label}>État du bien</Text>
+                            <CheckBox
+                                title="Neuf"
+                                checkedColor="#c51e1e" checked={false} />
+                            <CheckBox
+                                title="Ancien"
+                                checkedColor="#c51e1e" checked={false} />
+                            <CheckBox
+                                title="Luxe"
+                                checkedColor="#c51e1e" checked={false} />
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={second}>
+                                <Text style={styles.label}>Suivant</Text>
+                            </Pressable>
+                        </View>
+                    }
+
+                    {/* 2nd step */}
+                    {viewType === 2 &&
+                        <View>
+                            <Text style={styles.label}>Nom</Text>
+                            <TextInput
+                                onChangeText={(name) => setName(name)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.name}</Text>
+
+                            <Text style={styles.label}>Adresse</Text>
+                            <TextInput
+                                onChangeText={(address) => setAddress(address)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.address}</Text>
+
+                            <Text style={styles.label}>Adresse2</Text>
+                            <TextInput
+                                onChangeText={(addition_address) => setAdditionAddress(addition_address)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.addition_address}</Text>
+
+                            <Text style={styles.label}>Code postal</Text>
+                            <TextInput
+                                onChangeText={(zipcode) => setZipcode(zipcode)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.zipcode}</Text>
+
+                            <Text style={styles.label}>Ville</Text>
+                            <TextInput
+                                onChangeText={(city) => setCity(city)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.city}</Text>
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={third}>
+                                <Text style={styles.label}>Suivant</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={first}>
+                                <Text style={styles.label}>Précédent</Text>
+                            </Pressable>
+
+                        </View>
+                    }
+
+                    {/* 3rd step */}
+                    {viewType === 3 &&
+                        <View>
+                            <Text style={styles.label}>Description</Text>
+                            <TextInput
+                                onChangeText={(description) => setDescription(description)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.description}</Text>
+
+                            <Text style={styles.label}>Prix</Text>
+                            <TextInput
+                                onChangeText={(price) => setPrice(price)}
+                                keyboardType="numeric"
+                                style={styles.input}>
+                                €
+                            </TextInput>
+                            <Text style={styles.inputError}>{inputError?.price}</Text>
+
+                            <Text style={styles.label}>Surface</Text>
+                            <TextInput
+                                onChangeText={(surface) => setSurface(surface)}
+                                keyboardType="numeric"
+                                style={styles.input}>
+                                m²
+                            </TextInput>
+                            <Text style={styles.inputError}>{inputError?.surface}</Text>
+
+                            <Text style={styles.label}>Étage</Text>
+                            <TextInput
+                                onChangeText={(floor) => setFloor(floor)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.floor}</Text>
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                                <CheckBox
+                                    title="Bien meublé"
+                                    checked={is_furnished}
+                                    onPress={() => setIsFurnished(!is_furnished)}
+                                    checkedColor="#c51e1e" />
+                                <Text style={styles.inputError}>{inputError?.is_furnished}</Text>
+
+                                <CheckBox
+                                    title="Bien disponible"
+                                    checked={is_available}
+                                    onPress={() => setIsAvailable(!is_available)}
+                                    checkedColor="#c51e1e" />
+                                <Text style={styles.inputError}>{inputError?.is_available}</Text>
+                            </View>
+
+                            <Text style={styles.formError}>{formError}</Text>
+
+                            <Pressable
+                                style={{ backgroundColor: "#c51e1e", marginBottom: 20, padding: 10, borderRadius: 20 }}
+                                onPress={handleSubmit}>
+                                <Text style={{ color: "white", textAlign: "center", fontSize: 20 }}>Enregister le bien</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={second}>
+                                <Text style={styles.label}>Précédent</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={first}>
+                                <Text style={styles.label}>Revenir au début</Text>
+                            </Pressable>
 
 
 
-                    <Text style={styles.label}>État du bien</Text>
-                    <CheckBox
-                        title="Neuf"
-                        checkedColor="#c51e1e" checked={false} />
-                    <CheckBox
-                        title="Ancien"
-                        checkedColor="#c51e1e" checked={false} />
-                    <CheckBox
-                        title="Luxe"
-                        checkedColor="#c51e1e" checked={false} />
-
-
-                    <Text style={styles.label}>Nom</Text>
-                    <TextInput
-                        onChangeText={(name) => setName(name)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.name}</Text>
-
-                    <Text style={styles.label}>Adresse</Text>
-                    <TextInput
-                        onChangeText={(address) => setAddress(address)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.address}</Text>
-
-                    <Text style={styles.label}>Adresse2</Text>
-                    <TextInput
-                        onChangeText={(addition_address) => setAdditionAddress(addition_address)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.addition_address}</Text>
-
-                    <Text style={styles.label}>Code postal</Text>
-                    <TextInput
-                        onChangeText={(zipcode) => setZipcode(zipcode)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.zipcode}</Text>
-
-                    <Text style={styles.label}>Ville</Text>
-                    <TextInput
-                        onChangeText={(city) => setCity(city)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.city}</Text>
-
-                    <Text style={styles.label}>Description</Text>
-                    <TextInput
-                        onChangeText={(description) => setDescription(description)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.description}</Text>
-
-                    <Text style={styles.label}>Prix</Text>
-                    <TextInput
-                        onChangeText={(price) => setPrice(price)}
-                        keyboardType="numeric"
-                        style={styles.input}>
-                        €
-                    </TextInput>
-                    <Text style={styles.inputError}>{inputError?.price}</Text>
-
-                    <Text style={styles.label}>Surface</Text>
-                    <TextInput
-                        onChangeText={(surface) => setSurface(surface)}
-                        keyboardType="numeric"
-                        style={styles.input}>
-                        m²
-                    </TextInput>
-                    <Text style={styles.inputError}>{inputError?.surface}</Text>
-
-                    <Text style={styles.label}>Étage</Text>
-                    <TextInput
-                        onChangeText={(floor) => setFloor(floor)}
-                        style={styles.input} />
-                    <Text style={styles.inputError}>{inputError?.floor}</Text>
-
-
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                        <CheckBox
-                            title="Bien meublé"
-                            checked={is_furnished}
-                            onPress={() => setIsFurnished(!is_furnished)}
-                            checkedColor="#c51e1e" />
-                        <Text style={styles.inputError}>{inputError?.is_furnished}</Text>
-
-                        <CheckBox
-                            title="Bien disponible"
-                            checked={is_available}
-                            onPress={() => setIsAvailable(!is_available)}
-                            checkedColor="#c51e1e" />
-                        <Text style={styles.inputError}>{inputError?.is_available}</Text>
-                    </View>
+                        </View>
+                    }
                 </View>
-
-                <Text style={styles.formError}>{formError}</Text>
-
-                <Button
-                    title="Enregister le bien"
-                    color="red"
-                    onPress={handleSubmit}
-                />
-                {/* <Button
-                    title="Suivant"
-                    onPress={() => navigation.push('Prospect')}
-                /> */}
             </ScrollView>
             <View>
                 <FooterComponent />
