@@ -8,7 +8,7 @@ import AuthContext from '../Contexts/AuthContext';
 import Employee from '../Interfaces/Employee';
 
 
-const Avatar = ()=>{
+const Avatar = () => {
     return (
         <Image
             style={{ width: 75, height: 50 }}
@@ -16,7 +16,7 @@ const Avatar = ()=>{
         />
     );
 }
-const HeaderComponent = (dataUser:any)=>{
+const HeaderComponent = () => {
 
     const MMKV = new MMKVLoader().initialize()
 
@@ -34,28 +34,25 @@ const HeaderComponent = (dataUser:any)=>{
                     user.firstname = response.firstname
                 })
         } else {
-            console.log('token is null')
             MMKV.getStringAsync("access_token").then(token => {
                 if (typeof token == "string") {
                     setToken(token)
                 }
             })
-
         }
 
     }, [token])
 
-    return(
+    return (
         <Header
             placement="center"
             backgroundColor='#e2e2e2'
             leftComponent={<Avatar />}
-            centerComponent={{ text: dataProfile?.firstname+' '+dataProfile?.lastname, style: { color: '#000000', fontWeight: 'bold', fontSize: 22} }}
-            
+            centerComponent={{ text: dataProfile?.firstname + ' ' + dataProfile?.lastname, style: { color: '#000000', fontWeight: 'bold', fontSize: 22 } }}
+
         />
     );
 
 }
-
 
 export default HeaderComponent;

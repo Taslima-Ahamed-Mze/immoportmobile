@@ -1,6 +1,6 @@
 interface Login {
-    matricule: Array<number>|undefined;
-    password: Array<string>|undefined;
+    matricule: number | undefined;
+    password: string | undefined;
 }
 
 export default Login
