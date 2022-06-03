@@ -1,10 +1,14 @@
 import customAxios from "./BaseUrl";
 
 
-export const getEmployeeProperties= async () => {
-    return customAxios.get('property', {
+export const getEmployeeProperties= async (id:number,token:string) => {
+    return customAxios.get('property/employee/'+id, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     })
         .then((response) => {
+            console.log(response,'api');
             return response.data.property;
         })
         .catch(error => {

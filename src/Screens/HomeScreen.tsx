@@ -2,6 +2,7 @@ import { CommonActions } from '@react-navigation/native';
 import React from 'react';
 import { View, Button, Text, StyleSheet,Pressable } from 'react-native';
 
+import AuthContext from '../Contexts/AuthContext';
 
 import HeaderComponent from '../Components/Header';
 import CardDashboard from '../Components/CardDashboard';
@@ -20,7 +21,9 @@ const images = {
 
 };
 const HomeScreen = ({ navigation }: any) => {
+    const user = React.useContext(AuthContext)
     
+
 
     return (
         <View>

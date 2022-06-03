@@ -1,4 +1,5 @@
 interface LoggedEmployee {
+    id:number | undefined,
     id_agency: number | undefined,
     lastname: string | undefined,
     firstname: string | undefined,
