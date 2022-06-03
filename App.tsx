@@ -8,6 +8,7 @@ import AuthContext from './src/Contexts/AuthContext'
 import CalendarScreen from './src/Screens/CalendarScreen'
 import ProspectionScreen from './src/Screens/ProspectionScreen'
 import DocumentScreen from './src/Screens/DocumentScreen'
+import ProspectionFormScreen from './src/Screens/ProspectionFormScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -24,9 +25,9 @@ function App() {
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Bonjour' }} />
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ title: 'Calendrier' }} />
         <Stack.Screen name="Document" component={DocumentScreen} options={{ title: 'Documents' }} />
+        <Stack.Screen name="Prospect" component={ProspectionFormScreen} options={{ title: 'Créer un prospect' }} />
+        <Stack.Screen name="Prospections" component={ProspectionScreen} />
 
-        <Stack.Screen  name="Prospections" component={ProspectionScreen}/>
-      
       </Stack.Navigator>
     </NavigationContainer>
   )
