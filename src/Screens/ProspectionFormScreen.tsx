@@ -1,6 +1,7 @@
 import { Card, CheckBox } from '@rneui/base';
 import React, { useEffect, useState } from 'react';
 import { Alert, BackHandler, Button, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { MMKVLoader } from 'react-native-mmkv-storage';
 import { createProperty } from '../Api/Property';
 import FooterComponent from '../Components/Footer';
 import Property from '../Interfaces/Property';
@@ -54,13 +55,12 @@ const ProspectionFormScreen = ({ }) => {
     const [viewType, setViewType] = useState(1);
 
     const backAction = () => {
-        // condition is true when It is showing card 2 or card 3 on back press
+
         if (viewType > 1) {
-            setViewType(viewType - 1);
-            return true;
+            setViewType(viewType - 1)
+            return true
         }
-        // let the default thing happen
-        return false;
+        return false
     };
 
     useEffect(() => {
@@ -85,15 +85,17 @@ const ProspectionFormScreen = ({ }) => {
     const [check3, setCheck3] = useState(false);
     const [check4, setCheck4] = useState(false);
 
+    const [token, setToken] = React.useState<string | null>()
+
     const [name, setName] = useState<string | undefined>()
-    const [price, setPrice] = useState<number | undefined>()
+    const [price, setPrice] = useState<string | undefined>()
     const [address, setAddress] = useState<string | undefined>()
     const [addition_address, setAdditionAddress] = useState<string | undefined>()
     const [zipcode, setZipcode] = useState<string | undefined>()
     const [city, setCity] = useState<string | undefined>()
     const [description, setDescription] = useState<string | undefined>()
-    const [surface, setSurface] = useState<number | undefined>()
-    const [floor, setFloor] = useState<number | undefined>()
+    const [surface, setSurface] = useState<string | undefined>()
+    const [floor, setFloor] = useState<string | undefined>()
     const [is_furnished, setIsFurnished] = useState(false)
     const [is_available, setIsAvailable] = useState(false)
     const [name_property_type, setNamePropertyType] = useState<string | undefined>()
@@ -101,32 +103,41 @@ const ProspectionFormScreen = ({ }) => {
     const [formError, setFormError] = React.useState<string | null>(null)
     const [inputError, setInputError] = useState<Property | null>(null)
 
+    const MMKV = new MMKVLoader().initialize()
+
+    const data = [name, price, address, addition_address, zipcode, city, description, surface, floor]
+    console.log(data)
+
+    React.useEffect(() => {
+        { handleSubmit }
+    }, [token])
+
     const handleSubmit = () => {
-
-        // const data = [name, price, address, addition_address, zipcode, city, description, surface, floor]
-
-        // console.log(data)
-
-        if (typeof name == "string" &&
-            typeof price == "number" &&
+        if (
+            typeof token == "string" &&
+            typeof name == "string" &&
+            typeof price == "string" &&
             typeof address == "string" &&
             typeof addition_address == "string" &&
             typeof zipcode == "string" &&
             typeof city == "string" &&
             typeof description == "string" &&
-            typeof surface == "number" &&
-            typeof floor == "number" &&
-            typeof is_furnished == "boolean" &&
-            typeof is_available == "boolean" &&
-            typeof name_property_type == "string") {
-            createProperty(name, price, address, addition_address, zipcode, city, description, surface, floor, is_furnished, is_available, name_property_type)
+            typeof surface == "string" &&
+            typeof floor == "string") {
+            // typeof is_furnished == "boolean" &&
+            // typeof is_available == "boolean" ) {
+            console.log(token)
+            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), parseInt(floor))
+
                 .then((response) => {
+                    console.log("okkk")
                     if (response.status == 201) {
+                        console.log(response)
                         Alert.alert('enregistré!')
                     } else if (response.status == 409) {
                         console.log(response.data.message)
                     } else if (response.status == 422) {
-                        const { name, price, address, addition_address, zipcode, city, description, surface, floor, is_furnished, is_available, name_property_type }: Property = response.data
+                        const { name, price, address, addition_address, zipcode, city, description, surface, floor }: Property = response.data
                         const propertyInterface: Property = {
                             name: name,
                             price: price,
@@ -137,11 +148,10 @@ const ProspectionFormScreen = ({ }) => {
                             description: description,
                             surface: surface,
                             floor: floor,
-                            is_furnished: is_furnished,
-                            is_available: is_available,
-                            name_property_type: name_property_type
+                            // is_furnished: is_furnished,
+                            // is_available: is_available,
+                            // name_property_type: name_property_type
                         }
-                        console.log(propertyInterface)
 
                         setInputError(propertyInterface)
                         console.log(response.data.message)
@@ -152,8 +162,13 @@ const ProspectionFormScreen = ({ }) => {
                 })
         } else {
             setFormError("Le formulaire ne peut être vide!")
+            console.log(formError)
+            MMKV.getStringAsync("access_token").then(token => {
+                if (typeof token == "string") {
+                    setToken(token)
+                }
+            })
         }
-
     }
 
     return (
@@ -298,14 +313,14 @@ const ProspectionFormScreen = ({ }) => {
                                     checked={is_furnished}
                                     onPress={() => setIsFurnished(!is_furnished)}
                                     checkedColor="#c51e1e" />
-                                <Text style={styles.inputError}>{inputError?.is_furnished}</Text>
+                                {/* <Text style={styles.inputError}>{inputError?.is_furnished}</Text> */}
 
                                 <CheckBox
                                     title="Bien disponible"
                                     checked={is_available}
                                     onPress={() => setIsAvailable(!is_available)}
                                     checkedColor="#c51e1e" />
-                                <Text style={styles.inputError}>{inputError?.is_available}</Text>
+                                {/* <Text style={styles.inputError}>{inputError?.is_available}</Text> */}
                             </View>
 
                             <Text style={styles.formError}>{formError}</Text>
@@ -327,11 +342,9 @@ const ProspectionFormScreen = ({ }) => {
                                 onPress={first}>
                                 <Text style={styles.label}>Revenir au début</Text>
                             </Pressable>
-
-
-
                         </View>
                     }
+
                 </View>
             </ScrollView>
             <View>
@@ -340,6 +353,5 @@ const ProspectionFormScreen = ({ }) => {
         </View >
     )
 }
-
 
 export default ProspectionFormScreen;

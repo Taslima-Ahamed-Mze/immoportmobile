@@ -8,9 +8,9 @@ interface Property {
     description: string | undefined
     surface: number | undefined
     floor: number | undefined
-    is_furnished: boolean | undefined
-    is_available: boolean | undefined
-    name_property_type: string | undefined
+    // is_furnished: boolean | undefined
+    // is_available: boolean | undefined
+    // name_property_type: string | undefined
 }
 
 export default Property
