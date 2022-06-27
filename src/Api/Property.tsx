@@ -1,19 +1,20 @@
+import PropertyType from "../Interfaces/PropertyType";
 import customAxios from "./BaseUrl";
 
 export const createProperty = async (
     token: string,
     name: string,
-    price: number,
+    price: string,
     address: string,
     addition_address: string,
     zipcode: string,
     city: string,
     description: string,
-    surface: number,
-    floor: number,
-    // is_furnished: boolean,
-    // is_available: boolean,
-    // name_property_type: string
+    surface: string,
+    floor: string,
+    isFurnished: boolean,
+    isAvailable: boolean,
+    name_property_type: PropertyType,
 ) => {
     return customAxios.post("property", {
         headers: {
@@ -28,17 +29,17 @@ export const createProperty = async (
         description,
         surface,
         floor,
-        // is_furnished,
-        // is_available,
-        // name_property_type
+        isFurnished,
+        isAvailable,
+        name_property_type,     
     })
         .then((response) => {
-            console.log(response)
+            console.log("RESP " + response)
 
             return response
         })
         .catch((error) => {
-            console.log(error)
+            console.log("resp error: " + error)
 
             return error.response
         })

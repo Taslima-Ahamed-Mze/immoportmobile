@@ -5,6 +5,7 @@ import { MMKVLoader } from 'react-native-mmkv-storage';
 import { createProperty } from '../Api/Property';
 import FooterComponent from '../Components/Footer';
 import Property from '../Interfaces/Property';
+import PropertyType from '../Interfaces/PropertyType';
 
 const styles = StyleSheet.create({
 
@@ -80,13 +81,8 @@ const ProspectionFormScreen = ({ }) => {
         setViewType(3);
     };
 
-    const [check1, setCheck1] = useState(false);
-    const [check2, setCheck2] = useState(false);
-    const [check3, setCheck3] = useState(false);
-    const [check4, setCheck4] = useState(false);
-
     const [token, setToken] = React.useState<string | null>()
-
+    const [propertyType, setPropertyType] = useState<PropertyType>({ house: false, flat: false, studio: false, field: false })
     const [name, setName] = useState<string | undefined>()
     const [price, setPrice] = useState<string | undefined>()
     const [address, setAddress] = useState<string | undefined>()
@@ -95,18 +91,16 @@ const ProspectionFormScreen = ({ }) => {
     const [city, setCity] = useState<string | undefined>()
     const [description, setDescription] = useState<string | undefined>()
     const [surface, setSurface] = useState<string | undefined>()
-    const [floor, setFloor] = useState<string | undefined>()
-    const [is_furnished, setIsFurnished] = useState(false)
-    const [is_available, setIsAvailable] = useState(false)
-    const [name_property_type, setNamePropertyType] = useState<string | undefined>()
+    const [floor, setFloor] = useState<number | undefined>()
+    const [isFurnished, setIsFurnished] = useState(false)
+    const [isAvailable, setIsAvailable] = useState(false)
 
     const [formError, setFormError] = React.useState<string | null>(null)
     const [inputError, setInputError] = useState<Property | null>(null)
 
     const MMKV = new MMKVLoader().initialize()
 
-    const data = [name, price, address, addition_address, zipcode, city, description, surface, floor]
-    console.log(data)
+    const data = [propertyType, name, price, address, addition_address, zipcode, city, description, surface, floor, isFurnished, isAvailable]
 
     React.useEffect(() => {
         { handleSubmit }
@@ -123,14 +117,15 @@ const ProspectionFormScreen = ({ }) => {
             typeof city == "string" &&
             typeof description == "string" &&
             typeof surface == "string" &&
-            typeof floor == "string") {
-            // typeof is_furnished == "boolean" &&
-            // typeof is_available == "boolean" ) {
-            console.log(token)
-            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), parseInt(floor))
+            typeof floor == "string" &&
+            typeof isFurnished == "boolean" &&
+            typeof isAvailable == "boolean") {
+
+            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), parseInt(floor), isFurnished, isAvailable, propertyType)
 
                 .then((response) => {
                     console.log("okkk")
+                    console.log(response)
                     if (response.status == 201) {
                         console.log(response)
                         Alert.alert('enregistré!')
@@ -148,19 +143,29 @@ const ProspectionFormScreen = ({ }) => {
                             description: description,
                             surface: surface,
                             floor: floor,
-                            // is_furnished: is_furnished,
-                            // is_available: is_available,
-                            // name_property_type: name_property_type
+                            isFurnished: isFurnished,
+                            isAvailable: isAvailable,
                         }
 
                         setInputError(propertyInterface)
+
+                        const { ...propertyType }: PropertyType = response.data
+                        const propertyTypeInterface: PropertyType = {
+                            house: propertyType.house,
+                            flat: propertyType.flat,
+                            studio: propertyType.studio,
+                            field: propertyType.field,
+                        }
+                        console.log(propertyTypeInterface)
                         console.log(response.data.message)
+
                     }
                 })
                 .catch((error) => {
                     console.log(error)
                 })
         } else {
+            console.log(typeof token, typeof name, typeof price, typeof address, typeof addition_address, typeof zipcode, typeof city, typeof description, typeof surface, typeof floor, typeof isFurnished, typeof isAvailable, propertyType)
             setFormError("Le formulaire ne peut être vide!")
             console.log(formError)
             MMKV.getStringAsync("access_token").then(token => {
@@ -184,39 +189,39 @@ const ProspectionFormScreen = ({ }) => {
 
                             <CheckBox
                                 title="Maison"
-                                checked={check1}
-                                onPress={() => setCheck1(!check1)}
+                                checked={propertyType.house}
+                                onPress={() => setPropertyType({ ...propertyType, house: !propertyType.house })}
                                 checkedColor="#c51e1e"
                             />
                             <CheckBox
                                 title="Appartement"
-                                checked={check2}
-                                onPress={() => setCheck2(!check2)}
+                                checked={propertyType.flat}
+                                onPress={() => setPropertyType({ ...propertyType, flat: !propertyType.flat })}
                                 checkedColor="#c51e1e"
                             />
                             <CheckBox
                                 title="Studio"
-                                checked={check3}
-                                onPress={() => setCheck3(!check3)}
+                                checked={propertyType.studio}
+                                onPress={() => setPropertyType({ ...propertyType, studio: !propertyType.studio })}
                                 checkedColor="#c51e1e"
                             />
                             <CheckBox
                                 title="Terrain"
-                                checked={check4}
-                                onPress={() => setCheck4(!check4)}
+                                checked={propertyType.field}
+                                onPress={() => setPropertyType({ ...propertyType, field: !propertyType.field })}
                                 checkedColor="#c51e1e"
                             />
 
-                            <Text style={styles.label}>État du bien</Text>
+                            {/* <Text style={styles.label}>État du bien</Text>
                             <CheckBox
                                 title="Neuf"
-                                checkedColor="#c51e1e" checked={false} />
+                                checkedColor="#c51e1e" checked={} />
                             <CheckBox
                                 title="Ancien"
-                                checkedColor="#c51e1e" checked={false} />
+                                checkedColor="#c51e1e" checked={} />
                             <CheckBox
                                 title="Luxe"
-                                checkedColor="#c51e1e" checked={false} />
+                                checkedColor="#c51e1e" checked={} /> */}
 
                             <Pressable
                                 style={styles.buttonAction}
@@ -310,17 +315,17 @@ const ProspectionFormScreen = ({ }) => {
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
                                 <CheckBox
                                     title="Bien meublé"
-                                    checked={is_furnished}
-                                    onPress={() => setIsFurnished(!is_furnished)}
+                                    checked={isFurnished}
+                                    onPress={() => setIsFurnished(!isFurnished)}
                                     checkedColor="#c51e1e" />
-                                {/* <Text style={styles.inputError}>{inputError?.is_furnished}</Text> */}
+                                {/* <Text style={styles.inputError}>{inputError?.isFurnished}</Text> */}
 
                                 <CheckBox
                                     title="Bien disponible"
-                                    checked={is_available}
-                                    onPress={() => setIsAvailable(!is_available)}
+                                    checked={isAvailable}
+                                    onPress={() => setIsAvailable(!isAvailable)}
                                     checkedColor="#c51e1e" />
-                                {/* <Text style={styles.inputError}>{inputError?.is_available}</Text> */}
+                                {/* <Text style={styles.inputError}>{inputError?.isAvailable}</Text> */}
                             </View>
 
                             <Text style={styles.formError}>{formError}</Text>

@@ -1,16 +1,15 @@
 interface Property {
     name: string | undefined
-    price: number | undefined
+    price: string | undefined
     address: string | undefined
     addition_address: string | undefined
     zipcode: string | undefined
     city: string | undefined
     description: string | undefined
-    surface: number | undefined
-    floor: number | undefined
-    // is_furnished: boolean | undefined
-    // is_available: boolean | undefined
-    // name_property_type: string | undefined
+    surface: string | undefined
+    floor: string | undefined
+    isFurnished: boolean | undefined
+    isAvailable: boolean | undefined
 }
 
 export default Property
