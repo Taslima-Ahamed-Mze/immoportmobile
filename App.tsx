@@ -9,6 +9,7 @@ import CalendarScreen from './src/Screens/CalendarScreen'
 import ProspectionScreen from './src/Screens/ProspectionScreen'
 import DocumentScreen from './src/Screens/DocumentScreen'
 import ProspectionFormScreen from './src/Screens/ProspectionFormScreen'
+import { Calendar } from 'react-native-calendars'
 
 const Stack = createNativeStackNavigator()
 
