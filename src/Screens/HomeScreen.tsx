@@ -35,7 +35,6 @@ const HomeScreen = ({ navigation }: any) => {
             getProfile(token)
                 .then(response => {
                     user.login()
-                    console.log(response)
                     user.lastname = response.lastname
                     user.firstname = response.firstname
                     user.id_agency = response.id_agency

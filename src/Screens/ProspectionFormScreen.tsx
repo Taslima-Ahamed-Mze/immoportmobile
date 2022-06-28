@@ -1,11 +1,11 @@
-import { Card, CheckBox } from '@rneui/base';
+import { Card, CheckBox, Divider, Icon, Text } from '@rneui/base';
 import React, { useEffect, useState } from 'react';
-import { Alert, BackHandler, Button, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, BackHandler, Button, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { MMKVLoader } from 'react-native-mmkv-storage';
-import { createProperty } from '../Api/Property';
+import { createProperty, getPropertyAnnexes, getPropertyCategories, getPropertyHeaters, getPropertyHygienes, getPropertyKitchens, getPropertyOutdoors, getPropertyRoomTypes, getPropertyTypes } from '../Api/Property';
 import FooterComponent from '../Components/Footer';
 import Property from '../Interfaces/Property';
-import PropertyType from '../Interfaces/PropertyType';
+import PropertyFeatures from '../Interfaces/PropertyFeatures';
 
 const styles = StyleSheet.create({
 
@@ -48,7 +48,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         padding: 10,
         width: 200,
-    }
+    },
+
+    row: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+    },
 })
 
 const ProspectionFormScreen = ({ }) => {
@@ -80,11 +85,21 @@ const ProspectionFormScreen = ({ }) => {
     const third = () => {
         setViewType(3);
     };
+    const fourth = () => {
+        setViewType(4);
+    };
 
     const [token, setToken] = React.useState<string | null>()
-    const [propertyType, setPropertyType] = useState<PropertyType>({ house: false, flat: false, studio: false, field: false })
+    const [propertyType, setPropertyType] = useState<PropertyFeatures[]>()
+    const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>()
+    const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>()
+    const [propertyHygiene, setPropertyHygiene] = useState<PropertyFeatures[]>()
+    const [propertyKitchen, setPropertyKitchen] = useState<PropertyFeatures[]>()
+    const [propertyOutdoor, setPropertyOutdoor] = useState<PropertyFeatures[]>()
+    const [propertyAnnexe, setPropertyAnnexe] = useState<PropertyFeatures[]>()
+    const [propertyRoomType, setPropertyRoomType] = useState<PropertyFeatures[]>()
     const [name, setName] = useState<string | undefined>()
-    const [price, setPrice] = useState<string | undefined>()
+    const [price, setPrice] = useState<string>()
     const [address, setAddress] = useState<string | undefined>()
     const [addition_address, setAdditionAddress] = useState<string | undefined>()
     const [zipcode, setZipcode] = useState<string | undefined>()
@@ -100,8 +115,9 @@ const ProspectionFormScreen = ({ }) => {
 
     const MMKV = new MMKVLoader().initialize()
 
-    const data = [propertyType, name, price, address, addition_address, zipcode, city, description, surface, floor, isFurnished, isAvailable]
+    // const data = [propertyType, name, price, address, addition_address, zipcode, city, description, surface, floor, isFurnished, isAvailable]
 
+    /* send form creation after submit */
     React.useEffect(() => {
         { handleSubmit }
     }, [token])
@@ -119,20 +135,20 @@ const ProspectionFormScreen = ({ }) => {
             typeof surface == "string" &&
             typeof floor == "string" &&
             typeof isFurnished == "boolean" &&
-            typeof isAvailable == "boolean") {
+            typeof isAvailable == "boolean" &&
+            typeof propertyType == "number" &&
+            typeof propertyCategory == "number") {
 
-            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), parseInt(floor), isFurnished, isAvailable, propertyType)
+            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), parseInt(floor), isFurnished, isAvailable, propertyType, propertyCategory)
 
                 .then((response) => {
-                    console.log("okkk")
-                    console.log(response)
                     if (response.status == 201) {
-                        console.log(response)
                         Alert.alert('enregistré!')
                     } else if (response.status == 409) {
-                        console.log(response.data.message)
+                        console.log("409: " + response.data.message)
                     } else if (response.status == 422) {
                         const { name, price, address, addition_address, zipcode, city, description, surface, floor }: Property = response.data
+
                         const propertyInterface: Property = {
                             name: name,
                             price: price,
@@ -149,25 +165,18 @@ const ProspectionFormScreen = ({ }) => {
 
                         setInputError(propertyInterface)
 
-                        const { ...propertyType }: PropertyType = response.data
-                        const propertyTypeInterface: PropertyType = {
-                            house: propertyType.house,
-                            flat: propertyType.flat,
-                            studio: propertyType.studio,
-                            field: propertyType.field,
+                        const { ...propertyType }: PropertyFeatures = response.data
+                        const propertyFeaturesInterface: PropertyFeatures = {
+                            id: propertyType.id,
+                            name: propertyType.name
                         }
-                        console.log(propertyTypeInterface)
-                        console.log(response.data.message)
-
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log("error:" + error)
                 })
         } else {
-            console.log(typeof token, typeof name, typeof price, typeof address, typeof addition_address, typeof zipcode, typeof city, typeof description, typeof surface, typeof floor, typeof isFurnished, typeof isAvailable, propertyType)
             setFormError("Le formulaire ne peut être vide!")
-            console.log(formError)
             MMKV.getStringAsync("access_token").then(token => {
                 if (typeof token == "string") {
                     setToken(token)
@@ -175,6 +184,79 @@ const ProspectionFormScreen = ({ }) => {
             })
         }
     }
+
+    /* retrieve all the property types */
+    React.useEffect(() => {
+        getPropertyTypes()
+            .then(response => {
+                setPropertyType(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property categories */
+    React.useEffect(() => {
+        getPropertyCategories()
+            .then(response => {
+                setPropertyCategory(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property heaters */
+    React.useEffect(() => {
+        getPropertyHeaters()
+            .then(response => {
+                setPropertyHeater(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property hygiene room's types */
+    React.useEffect(() => {
+        getPropertyHygienes()
+            .then(response => {
+                setPropertyHygiene(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property kitchen's types */
+    React.useEffect(() => {
+        getPropertyKitchens()
+            .then(response => {
+                setPropertyKitchen(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property outdoor's types */
+    React.useEffect(() => {
+        getPropertyOutdoors()
+            .then(response => {
+                setPropertyOutdoor(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property annexes */
+    React.useEffect(() => {
+        getPropertyAnnexes()
+            .then(response => {
+                setPropertyAnnexe(response)
+            })
+
+    }, [])
+
+    /* retrieve all the property room's types */
+    React.useEffect(() => {
+        getPropertyRoomTypes()
+            .then(response => {
+                setPropertyRoomType(response)
+            })
+
+    }, [])
+
 
     return (
         <View style={{ flex: 1, padding: 10 }}>
@@ -185,43 +267,54 @@ const ProspectionFormScreen = ({ }) => {
                     {/* 1st step */}
                     {viewType === 1 &&
                         <View>
+                            <Text h1>1</Text>
                             <Text style={styles.label}>Type de bien</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyType != null && propertyType.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checkedColor="#c51e1e"
+                                            checkedIcon='dot-circle-o'
+                                            checked={false}
+                                            key={key}
 
-                            <CheckBox
-                                title="Maison"
-                                checked={propertyType.house}
-                                onPress={() => setPropertyType({ ...propertyType, house: !propertyType.house })}
-                                checkedColor="#c51e1e"
-                            />
-                            <CheckBox
-                                title="Appartement"
-                                checked={propertyType.flat}
-                                onPress={() => setPropertyType({ ...propertyType, flat: !propertyType.flat })}
-                                checkedColor="#c51e1e"
-                            />
-                            <CheckBox
-                                title="Studio"
-                                checked={propertyType.studio}
-                                onPress={() => setPropertyType({ ...propertyType, studio: !propertyType.studio })}
-                                checkedColor="#c51e1e"
-                            />
-                            <CheckBox
-                                title="Terrain"
-                                checked={propertyType.field}
-                                onPress={() => setPropertyType({ ...propertyType, field: !propertyType.field })}
-                                checkedColor="#c51e1e"
-                            />
+                                        />
+                                    ))
+                                }
+                            </View>
 
-                            {/* <Text style={styles.label}>État du bien</Text>
-                            <CheckBox
-                                title="Neuf"
-                                checkedColor="#c51e1e" checked={} />
-                            <CheckBox
-                                title="Ancien"
-                                checkedColor="#c51e1e" checked={} />
-                            <CheckBox
-                                title="Luxe"
-                                checkedColor="#c51e1e" checked={} /> */}
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Catégorie du bien</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyCategory != null && propertyCategory.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Type de chauffage</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyHeater != null && propertyHeater.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
 
                             <Pressable
                                 style={styles.buttonAction}
@@ -234,6 +327,103 @@ const ProspectionFormScreen = ({ }) => {
                     {/* 2nd step */}
                     {viewType === 2 &&
                         <View>
+                            <Text h1>2</Text>
+                            <Text style={styles.label}>Type de salle d'eau</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyHygiene != null && propertyHygiene.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Type de cuisine</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyKitchen != null && propertyKitchen.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Éléments extérieurs</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyOutdoor != null && propertyOutdoor.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Éléments annexes</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyAnnexe != null && propertyAnnexe.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Types de pièces</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyRoomType != null && propertyRoomType.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={third}>
+                                <Text style={styles.label}>Suivant</Text>
+                            </Pressable>
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={first}>
+                                <Text style={styles.label}>Précédent</Text>
+                            </Pressable>
+                        </View>
+                    }
+
+
+                    {/* 3rd step */}
+                    {viewType === 3 &&
+                        <View>
+                            <Text h1>3</Text>
                             <Text style={styles.label}>Nom</Text>
                             <TextInput
                                 onChangeText={(name) => setName(name)}
@@ -266,13 +456,13 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Pressable
                                 style={styles.buttonAction}
-                                onPress={third}>
+                                onPress={fourth}>
                                 <Text style={styles.label}>Suivant</Text>
                             </Pressable>
 
                             <Pressable
                                 style={styles.buttonAction}
-                                onPress={first}>
+                                onPress={second}>
                                 <Text style={styles.label}>Précédent</Text>
                             </Pressable>
 
@@ -280,8 +470,9 @@ const ProspectionFormScreen = ({ }) => {
                     }
 
                     {/* 3rd step */}
-                    {viewType === 3 &&
+                    {viewType === 4 &&
                         <View>
+                            <Text h1>4</Text>
                             <Text style={styles.label}>Description</Text>
                             <TextInput
                                 onChangeText={(description) => setDescription(description)}
@@ -338,7 +529,7 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Pressable
                                 style={styles.buttonAction}
-                                onPress={second}>
+                                onPress={third}>
                                 <Text style={styles.label}>Précédent</Text>
                             </Pressable>
 

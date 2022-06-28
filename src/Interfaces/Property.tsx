@@ -1,6 +1,6 @@
 interface Property {
     name: string | undefined
-    price: string | undefined
+    price: string 
     address: string | undefined
     addition_address: string | undefined
     zipcode: string | undefined

@@ -1,4 +1,4 @@
-import PropertyType from "../Interfaces/PropertyType";
+import PropertyType from "../Interfaces/PropertyFeatures";
 import customAxios from "./BaseUrl";
 
 export const createProperty = async (
@@ -12,14 +12,12 @@ export const createProperty = async (
     description: string,
     surface: string,
     floor: string,
-    isFurnished: boolean,
-    isAvailable: boolean,
-    name_property_type: PropertyType,
+    is_furnished: boolean,
+    is_available: boolean,
+    id_property_type: number,
+    id_property_category: number
 ) => {
-    return customAxios.post("property", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+    const data = {
         name,
         price,
         address,
@@ -29,9 +27,15 @@ export const createProperty = async (
         description,
         surface,
         floor,
-        isFurnished,
-        isAvailable,
-        name_property_type,     
+        is_furnished,
+        is_available,
+        id_property_type,
+        id_property_category
+    }
+    return customAxios.post("property/new", data, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
     })
         .then((response) => {
             console.log("RESP " + response)
@@ -41,6 +45,94 @@ export const createProperty = async (
         .catch((error) => {
             console.log("resp error: " + error)
 
+            return error.response
+        })
+}
+
+export const getPropertyTypes = async () => {
+    return customAxios.get('property/type', {
+    })
+        .then((response) => {
+            return response.data.property_type
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyCategories = async () => {
+    return customAxios.get('property/category', {
+    })
+        .then((response) => {
+            return response.data.property_category
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyHeaters = async () => {
+    return customAxios.get('property/heater', {
+    })
+        .then((response) => {
+            return response.data.heater
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyHygienes = async () => {
+    return customAxios.get('property/hygiene', {
+    })
+        .then((response) => {
+            return response.data.hygiene
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyKitchens = async () => {
+    return customAxios.get('property/kitchen', {
+    })
+        .then((response) => {
+            return response.data.kitchen
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyOutdoors = async () => {
+    return customAxios.get('property/outdoor', {
+    })
+        .then((response) => {
+            return response.data.outdoor
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyAnnexes = async () => {
+    return customAxios.get('property/annexe', {
+    })
+        .then((response) => {
+            return response.data.annexe
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getPropertyRoomTypes = async () => {
+    return customAxios.get('property/room-type', {
+    })
+        .then((response) => {
+            return response.data.room_type
+        })
+        .catch((error) => {
             return error.response
         })
 }
