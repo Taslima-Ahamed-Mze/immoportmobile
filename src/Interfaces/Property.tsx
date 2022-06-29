@@ -11,13 +11,6 @@ interface Property {
     isFurnished: boolean | undefined
     isAvailable: boolean | undefined
     
-   
-    id:number | undefined;
-    property:{
-        name:string | undefined
-    };
-
-    
 }
 
 export default Property

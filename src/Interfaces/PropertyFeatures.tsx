@@ -1,6 +1,7 @@
 interface PropertyFeatures {
-    id: boolean 
+    id: number 
     name: string 
+    isChecked: boolean
 }
 
 export default PropertyFeatures
