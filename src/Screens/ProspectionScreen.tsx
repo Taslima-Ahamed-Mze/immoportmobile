@@ -11,8 +11,6 @@ import { color } from '@rneui/base';
 import Property from '../Interfaces/Property';
 import { getEmployeeProperties } from '../Api/Property';
 
-
-
 const styles = StyleSheet.create({
     cardComponent: {
         display: 'flex',
