@@ -23,39 +23,7 @@ const images = {
 
 };
 const HomeScreen = ({ navigation }: any) => {
-    const MMKV = new MMKVLoader().initialize()
-
-    const [token, setToken] = React.useState<string | null>()
-    // const [dataProfile, setDataProfile] = React.useState<Employee>()
     const user = React.useContext(AuthContext)
-
-    React.useEffect(() => {
-
-        if (typeof token == "string") {
-            getProfile(token)
-                .then(response => {
-                    user.login()
-                    console.log(response)
-                    user.lastname = response.lastname
-                    user.firstname = response.firstname
-                    user.id_agency = response.id_agency
-                    user.mail = response.mail
-                    user.matricule = response.matricule
-                    user.phone = response.phone
-                    user.isLoggedIn = true
-
-                })
-        } else {
-            MMKV.getStringAsync("access_token").then(token => {
-                if (typeof token == "string") {
-                    setToken(token)
-                }
-            })
-
-        }
-
-    }, [token])
-
     const handleLogout = () => {
         user.logout
         // logoutProfile()
@@ -69,6 +37,7 @@ const HomeScreen = ({ navigation }: any) => {
         });
 
     }
+
 
     return (
         <View>
