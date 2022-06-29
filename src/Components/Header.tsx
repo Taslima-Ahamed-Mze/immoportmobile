@@ -32,6 +32,7 @@ const HeaderComponent = () => {
                     user.login()
                     user.lastname = response.lastname
                     user.firstname = response.firstname
+                    user.id = response.id
                 })
         } else {
             MMKV.getStringAsync("access_token").then(token => {
@@ -48,8 +49,8 @@ const HeaderComponent = () => {
             placement="center"
             backgroundColor='#e2e2e2'
             leftComponent={<Avatar />}
-            centerComponent={{ text: dataProfile?.firstname + ' ' + dataProfile?.lastname, style: { color: '#000000', fontWeight: 'bold', fontSize: 22 } }}
-
+            centerComponent={{ text: user.firstname+' '+user.lastname, style: { color: '#000000', fontWeight: 'bold', fontSize: 22} }}
+            
         />
     );
 

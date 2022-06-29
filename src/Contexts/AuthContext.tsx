@@ -5,6 +5,7 @@ import Children from "../Interfaces/Children";
 import LoggedEmployee from "../Interfaces/LoggedEmployee";
 
 const AuthContext = createContext<LoggedEmployee>({
+    id:undefined,
     id_agency: undefined,
     lastname: undefined,
     firstname: undefined,
@@ -19,6 +20,7 @@ const AuthContext = createContext<LoggedEmployee>({
 
 export const AuthProvider = ({ children }: Children) => {
     const MMKV = new MMKVLoader().initialize()
+    const [id, setId] = useState<undefined>(undefined)
     const [id_agency, setIdAgency] = useState<undefined>(undefined)
     const [lastname, setLastname] = useState<undefined>(undefined)
     const [firstname, setFirstname] = useState<undefined>(undefined)
@@ -36,6 +38,8 @@ export const AuthProvider = ({ children }: Children) => {
 
     const logout = () => {
         logoutProfile()
+        
+        setId(undefined)
         setIdAgency(undefined)
         setLastname(undefined)
         setFirstname(undefined)
@@ -46,7 +50,7 @@ export const AuthProvider = ({ children }: Children) => {
     }
 
     return (
-        <AuthContext.Provider value={{ id_agency, lastname, firstname, mail, phone, matricule, isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ id,id_agency, lastname, firstname, mail, phone, matricule, isLoggedIn, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
