@@ -50,7 +50,6 @@ const Prospections = ({ navigation }: any) => {
             getEmployeeProperties(id_employee, token)
                 .then(response => {
                     setDataProperty(response)
-                    console.log(response, 'screen');
 
 
                 }).catch((error) => {

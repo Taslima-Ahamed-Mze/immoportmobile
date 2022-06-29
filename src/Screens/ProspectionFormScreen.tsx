@@ -90,7 +90,7 @@ const ProspectionFormScreen = ({ }) => {
     };
 
     const [token, setToken] = React.useState<string | null>()
-    const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: false, name: "undefined" }])
+    const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>()
     const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>()
     const [propertyHygiene, setPropertyHygiene] = useState<PropertyFeatures[]>()
@@ -121,8 +121,6 @@ const ProspectionFormScreen = ({ }) => {
     React.useEffect(() => {
         { handleSubmit }
     }, [token])
-
-    console.log(propertyType)
 
     const handleSubmit = () => {
         if (
@@ -259,6 +257,15 @@ const ProspectionFormScreen = ({ }) => {
 
     }, [])
 
+    // const checkHandler = (item: { id: string | number; name: string; }) => () => {
+    //     setPropertyType((propertyType) => ({
+    //         ...propertyType,
+    //         [item.id]: propertyType[item.id] ? null : {
+    //             id: item.id,
+    //             name: item.name
+    //         }
+    //     }))
+    // }
 
     return (
         <View style={{ flex: 1, padding: 10 }}>
@@ -273,14 +280,19 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Type de bien</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyType != null && propertyType.map((item, key) => (
+                                    propertyType.map((item, key) => (
                                         <CheckBox
                                             title={item.name}
                                             checkedColor="#c51e1e"
-                                            checked={item.id}
+                                            checked={item.isChecked}
                                             key={key}
-                                            onPress={() => setPropertyType({})}
-
+                                            onPress={() => setPropertyType([
+                                                {
+                                                    id: !item.id,
+                                                    name: !item.name,
+                                                    isChecked: !item.isChecked,
+                                                }
+                                            ])}
                                         />
                                     ))
                                 }
