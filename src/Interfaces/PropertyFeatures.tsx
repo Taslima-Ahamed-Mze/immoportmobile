@@ -1,6 +1,6 @@
 interface PropertyFeatures {
-    id: number 
-    name: string
+    id: boolean 
+    name: string 
 }
 
 export default PropertyFeatures

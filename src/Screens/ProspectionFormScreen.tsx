@@ -90,7 +90,7 @@ const ProspectionFormScreen = ({ }) => {
     };
 
     const [token, setToken] = React.useState<string | null>()
-    const [propertyType, setPropertyType] = useState<PropertyFeatures[]>()
+    const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: false, name: "undefined" }])
     const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>()
     const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>()
     const [propertyHygiene, setPropertyHygiene] = useState<PropertyFeatures[]>()
@@ -121,6 +121,8 @@ const ProspectionFormScreen = ({ }) => {
     React.useEffect(() => {
         { handleSubmit }
     }, [token])
+
+    console.log(propertyType)
 
     const handleSubmit = () => {
         if (
@@ -275,9 +277,9 @@ const ProspectionFormScreen = ({ }) => {
                                         <CheckBox
                                             title={item.name}
                                             checkedColor="#c51e1e"
-                                            checkedIcon='dot-circle-o'
-                                            checked={false}
+                                            checked={item.id}
                                             key={key}
+                                            onPress={() => setPropertyType({})}
 
                                         />
                                     ))
@@ -389,6 +391,10 @@ const ProspectionFormScreen = ({ }) => {
                                     ))
                                 }
                             </View>
+                            <Text style={styles.label}>N° de parking</Text>
+                            <TextInput
+                                style={{ width: 100, borderColor: 'black', borderWidth: 0.5, alignSelf: 'center', marginTop: 20 }} />
+                            <Text style={styles.inputError}>{inputError?.floor}</Text>
 
                             <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
 
