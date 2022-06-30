@@ -7,10 +7,8 @@ interface Property {
     city: string | undefined
     description: string | undefined
     surface: string | undefined
-    floor: string | undefined
     isFurnished: boolean | undefined
     isAvailable: boolean | undefined
-    
 }
 
 export default Property

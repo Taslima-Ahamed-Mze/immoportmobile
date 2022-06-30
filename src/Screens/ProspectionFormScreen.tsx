@@ -2,7 +2,7 @@ import { Card, CheckBox, Divider, Icon, Text } from '@rneui/base';
 import React, { useEffect, useState } from 'react';
 import { Alert, BackHandler, Button, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { MMKVLoader } from 'react-native-mmkv-storage';
-import { createProperty, getPropertyAnnexes, getPropertyCategories, getPropertyHeaters, getPropertyHygienes, getPropertyKitchens, getPropertyOutdoors, getPropertyRoomTypes, getPropertyTypes } from '../Api/Property';
+import { createProperty, getPropertyCategories, getPropertyFeatures, getPropertyHeaters, getPropertyKitchens, getPropertyRoomTypes, getPropertyTypes } from '../Api/Property';
 import FooterComponent from '../Components/Footer';
 import Property from '../Interfaces/Property';
 import PropertyFeatures from '../Interfaces/PropertyFeatures';
@@ -93,11 +93,9 @@ const ProspectionFormScreen = ({ }) => {
     const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>()
     const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>()
-    const [propertyHygiene, setPropertyHygiene] = useState<PropertyFeatures[]>()
     const [propertyKitchen, setPropertyKitchen] = useState<PropertyFeatures[]>()
-    const [propertyOutdoor, setPropertyOutdoor] = useState<PropertyFeatures[]>()
-    const [propertyAnnexe, setPropertyAnnexe] = useState<PropertyFeatures[]>()
     const [propertyRoomType, setPropertyRoomType] = useState<PropertyFeatures[]>()
+    const [propertyFeature, setPropertyFeature] = useState<PropertyFeatures[]>()
     const [name, setName] = useState<string | undefined>()
     const [price, setPrice] = useState<string>()
     const [address, setAddress] = useState<string | undefined>()
@@ -106,7 +104,6 @@ const ProspectionFormScreen = ({ }) => {
     const [city, setCity] = useState<string | undefined>()
     const [description, setDescription] = useState<string | undefined>()
     const [surface, setSurface] = useState<string | undefined>()
-    const [floor, setFloor] = useState<number | undefined>()
     const [isFurnished, setIsFurnished] = useState(false)
     const [isAvailable, setIsAvailable] = useState(false)
 
@@ -133,13 +130,12 @@ const ProspectionFormScreen = ({ }) => {
             typeof city == "string" &&
             typeof description == "string" &&
             typeof surface == "string" &&
-            typeof floor == "string" &&
             typeof isFurnished == "boolean" &&
             typeof isAvailable == "boolean" &&
             typeof propertyType == "number" &&
             typeof propertyCategory == "number") {
 
-            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), parseInt(floor), isFurnished, isAvailable, propertyType, propertyCategory)
+            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), isFurnished, isAvailable, propertyType, propertyCategory)
 
                 .then((response) => {
                     if (response.status == 201) {
@@ -158,7 +154,6 @@ const ProspectionFormScreen = ({ }) => {
                             city: city,
                             description: description,
                             surface: surface,
-                            floor: floor,
                             isFurnished: isFurnished,
                             isAvailable: isAvailable,
                         }
@@ -168,7 +163,8 @@ const ProspectionFormScreen = ({ }) => {
                         const { ...propertyType }: PropertyFeatures = response.data
                         const propertyFeaturesInterface: PropertyFeatures = {
                             id: propertyType.id,
-                            name: propertyType.name
+                            name: propertyType.name,
+                            isChecked: propertyType.isChecked
                         }
                     }
                 })
@@ -212,14 +208,6 @@ const ProspectionFormScreen = ({ }) => {
 
     }, [])
 
-    /* retrieve all the property hygiene room's types */
-    React.useEffect(() => {
-        getPropertyHygienes()
-            .then(response => {
-                setPropertyHygiene(response)
-            })
-
-    }, [])
 
     /* retrieve all the property kitchen's types */
     React.useEffect(() => {
@@ -230,29 +218,20 @@ const ProspectionFormScreen = ({ }) => {
 
     }, [])
 
-    /* retrieve all the property outdoor's types */
+    /* retrieve all the property room's types */
     React.useEffect(() => {
-        getPropertyOutdoors()
+        getPropertyRoomTypes()
             .then(response => {
-                setPropertyOutdoor(response)
-            })
-
-    }, [])
-
-    /* retrieve all the property annexes */
-    React.useEffect(() => {
-        getPropertyAnnexes()
-            .then(response => {
-                setPropertyAnnexe(response)
+                setPropertyRoomType(response)
             })
 
     }, [])
 
     /* retrieve all the property room's types */
     React.useEffect(() => {
-        getPropertyRoomTypes()
+        getPropertyFeatures()
             .then(response => {
-                setPropertyRoomType(response)
+                setPropertyFeature(response)
             })
 
     }, [])
