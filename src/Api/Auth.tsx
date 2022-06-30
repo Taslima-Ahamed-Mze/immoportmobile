@@ -1,5 +1,5 @@
 import customAxios from "./BaseUrl"
-import { MMKVLoader, useMMKVStorage } from "react-native-mmkv-storage"
+import { MMKVLoader } from "react-native-mmkv-storage"
 
 // const MMKV = new MMKVLoader()
 //     // .withEncryption()
@@ -37,7 +37,7 @@ export const logoutProfile = () => {
 }
 
 export const getProfile = async (token: string) => {
-    return customAxios.get("espaceemploye/dashboard", {
+    return customAxios.get("employee/dashboard", {
         headers: {
             Authorization: `Bearer ${token}`,
         },

@@ -50,7 +50,7 @@ export const createProperty = async (
 }
 
 export const getPropertyTypes = async () => {
-    return customAxios.get('property/type', {
+    return customAxios.get('property/types', {
     })
         .then((response) => {
             return response.data.property_type
@@ -61,7 +61,7 @@ export const getPropertyTypes = async () => {
 }
 
 export const getPropertyCategories = async () => {
-    return customAxios.get('property/category', {
+    return customAxios.get('property/categories', {
     })
         .then((response) => {
             return response.data.property_category
@@ -72,7 +72,7 @@ export const getPropertyCategories = async () => {
 }
 
 export const getPropertyHeaters = async () => {
-    return customAxios.get('property/heater', {
+    return customAxios.get('property/heaters', {
     })
         .then((response) => {
             return response.data.heater
@@ -82,19 +82,8 @@ export const getPropertyHeaters = async () => {
         })
 }
 
-export const getPropertyHygienes = async () => {
-    return customAxios.get('property/hygiene', {
-    })
-        .then((response) => {
-            return response.data.hygiene
-        })
-        .catch((error) => {
-            return error.response
-        })
-}
-
 export const getPropertyKitchens = async () => {
-    return customAxios.get('property/kitchen', {
+    return customAxios.get('property/kitchens', {
     })
         .then((response) => {
             return response.data.kitchen
@@ -104,30 +93,8 @@ export const getPropertyKitchens = async () => {
         })
 }
 
-export const getPropertyOutdoors = async () => {
-    return customAxios.get('property/outdoor', {
-    })
-        .then((response) => {
-            return response.data.outdoor
-        })
-        .catch((error) => {
-            return error.response
-        })
-}
-
-export const getPropertyAnnexes = async () => {
-    return customAxios.get('property/annexe', {
-    })
-        .then((response) => {
-            return response.data.annexe
-        })
-        .catch((error) => {
-            return error.response
-        })
-}
-
 export const getPropertyRoomTypes = async () => {
-    return customAxios.get('property/room-type', {
+    return customAxios.get('property/room-types', {
     })
         .then((response) => {
             return response.data.room_type
@@ -137,14 +104,25 @@ export const getPropertyRoomTypes = async () => {
         })
 }
 
-export const getEmployeeProperties= async (id:number,token:string) => {
-    return customAxios.get('property/employee/'+id, {
+export const getPropertyFeatures = async () => {
+    return customAxios.get('property/features', {
+    })
+        .then((response) => {
+            return response.data.feature
+        })
+        .catch((error) => {
+            return error.response
+        })
+}
+
+export const getEmployeeProperties = async (id: number, token: string) => {
+    return customAxios.get('property/employee/' + id, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     })
         .then((response) => {
-            console.log(response,'api');
+            console.log(response, 'api');
             return response.data.property;
         })
         .catch(error => {
