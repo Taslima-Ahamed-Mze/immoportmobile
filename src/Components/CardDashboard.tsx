@@ -1,41 +1,42 @@
 import React from 'react';
-import { Header,Card } from "@rneui/themed";
-import { Image, Button, View, Text, StyleSheet, Alert ,Pressable} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Card, Icon } from "@rneui/themed";
+import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 
 
 const styles = StyleSheet.create({
     cardView: {
-        display: 'flex', 
-        flexDirection:'row',
-        justifyContent: 'center', 
+        display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
-        margin:30
+        margin: 30
     },
-    
+
     image: {
-        width: 75, 
+        width: 75,
         height: 50
     },
-    text:{
-        color:'black',
-        fontWeight: 'bold', 
-        fontSize: 25
+    text: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 25,
+        marginLeft: 20
     }
 })
 
 
-const CardDashboard = (cardContent:any)=>{
+const CardDashboard = (cardContent: any) => {
     return (
 
-        <Card  borderRadius={18} containerStyle={{elevation:0, borderColor:'#ef3a5d',height:150}}>    
-            <View style={styles.cardView} >
-                <Image
-                    style={styles.image}
-                    source={cardContent.image}
+        <Card borderRadius={18} containerStyle={{ elevation: 0, borderColor: '#c51e1e', height: 150 }}>
+            <View style={styles.cardView}>
+                <Icon
+                    raised
+                    name={cardContent.name}
+                    type='font-awesome'
+                    color='#c51e1e'
                 />
-                <Text  style={styles.text}>{cardContent.title}</Text>
-            </View>    
+                <Text style={styles.text}>{cardContent.title}</Text>
+            </View>
         </Card>
     );
 }

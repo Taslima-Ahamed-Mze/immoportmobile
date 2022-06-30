@@ -1,3 +1,5 @@
+import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 import {
     StyleSheet,
@@ -5,6 +7,8 @@ import {
     Button,
     TextInput,
     Text,
+    Pressable,
+    TouchableHighlight,
 } from 'react-native'
 import { login } from '../Api/Auth'
 import AuthContext from '../Contexts/AuthContext'
@@ -15,17 +19,37 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 24,
     },
+    button: {
+        borderColor: 'red',
+        backgroundColor: 'red',
+        opacity: 0.9,
+        padding: 20,
+        borderRadius: 10,
+        flexDirection: 'row',
+        textAlign: 'center',
+        width: 250,
+        alignSelf:'center',
+    },
     input: {
         height: 40,
         margin: 12,
+        borderRadius: 10,
         borderWidth: 0.5,
-        padding: 10,
+        padding: 15,
         color: "black"
     },
     label: {
         color: "black",
-        fontWeight: "bold"
-
+        fontWeight: "bold",
+        textAlign:'center',
+        textTransform: 'uppercase'
+    },
+    text: {
+        fontWeight: "bold",
+        color: "white",
+        fontSize: 20,
+        marginRight: 25,
+        textAlign: 'center'
     },
     inputError: {
         fontWeight: "bold",
@@ -47,6 +71,8 @@ const LoginScreen = ({ navigation }: any) => {
 
     const [matricule, setMatricule] = React.useState<string | undefined>()
     const [password, setPassword] = React.useState<string | undefined>()
+
+
 
     const handleSubmit = () => {
         if (typeof matricule == "string" && typeof password == "string") {
@@ -94,11 +120,13 @@ const LoginScreen = ({ navigation }: any) => {
             />
             <Text style={styles.inputError}>{inputError?.password}</Text>
 
-            <Button
-                title="Connexion"
-                color="red"
-                onPress={handleSubmit}
-            />
+            <Pressable onPress={handleSubmit}>
+                <View style={styles.button}>
+                    <Text style={styles.text}>Connexion</Text>
+                    <FontAwesomeIcon icon={faArrowRightToBracket} color="white" size={26} />
+                </View>
+            </Pressable>
+
             <Text style={styles.formError}>{formError}</Text>
 
         </View>

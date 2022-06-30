@@ -1,6 +1,4 @@
 interface PropertyFeatures {
-    id: number 
-    name: string 
     isChecked: boolean
 }
 

@@ -1,13 +1,12 @@
-import { CommonActions } from '@react-navigation/native';
 import React from 'react';
-import { View, Button, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
-import { MMKVLoader } from 'react-native-mmkv-storage';
-import { getProfile } from '../Api/Auth';
+import { View, StyleSheet, Pressable, ScrollView } from 'react-native';
 import AuthContext from '../Contexts/AuthContext';
-
-
 import HeaderComponent from '../Components/Header';
 import CardDashboard from '../Components/CardDashboard';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { Icon } from '@rneui/themed';
 
 const styles = StyleSheet.create({
     text: {
@@ -22,6 +21,19 @@ const images = {
     logout: require('../../Assets/images/logout.png'),
 
 };
+
+const type = 'font-awesome'
+const name = {
+    note: 'home',
+    agenda: 'calendar',
+    doc: 'file',
+    logout: 'sign-out'
+}
+// const name = {
+//     note: faHouse as IconProp
+
+// }
+
 const HomeScreen = ({ navigation }: any) => {
     const user = React.useContext(AuthContext)
     const handleLogout = () => {
@@ -38,23 +50,31 @@ const HomeScreen = ({ navigation }: any) => {
 
     }
 
-
     return (
         <View>
 
             <View style={{ padding: 10 }}>
                 <HeaderComponent />
                 <ScrollView>
+
                     <Pressable onPress={() => navigation.navigate('Prospections')}>
-                        <CardDashboard title='Prospections' image={images.note} />
+                        <CardDashboard title='Prospections' name={name.note}>
+                        </CardDashboard>
                     </Pressable>
+
                     <Pressable onPress={() => navigation.navigate('Calendar')}>
-                        <CardDashboard title='Agenda' image={images.agenda} />
+                        <CardDashboard title='Agenda' name={name.agenda}>
+                        </CardDashboard>
                     </Pressable>
-                    <CardDashboard title='Documents' image={images.doc} />
+
+                    <CardDashboard title='Documents' name={name.doc}>
+                    </CardDashboard>
+
                     <Pressable onPress={handleLogout}>
-                        <CardDashboard title='Déconnexion' image={images.logout} />
+                        <CardDashboard title='Déconnexion' name={name.logout}>
+                        </CardDashboard>
                     </Pressable>
+
                 </ScrollView>
 
             </View>
