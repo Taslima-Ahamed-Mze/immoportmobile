@@ -79,8 +79,6 @@ const LoginScreen = ({ navigation }: any) => {
     const [matricule, setMatricule] = React.useState<string | undefined>()
     const [password, setPassword] = React.useState<string | undefined>()
 
-
-
     const handleSubmit = () => {
         if (typeof matricule == "string" && typeof password == "string") {
             login(parseInt(matricule), password)

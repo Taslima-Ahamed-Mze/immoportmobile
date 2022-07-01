@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 30
     },
 
     image: {
@@ -17,9 +16,10 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'black',
-        fontWeight: 'bold',
-        fontSize: 25,
-        marginLeft: 20
+        fontWeight: '100',
+        fontSize: 22,
+        marginLeft: 20,
+        textTransform: 'uppercase',
     }
 })
 
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 const CardDashboard = (cardContent: any) => {
     return (
 
-        <Card borderRadius={18} containerStyle={{ elevation: 0, borderColor: '#c51e1e', height: 150 }}>
+        <Card borderRadius={18} containerStyle={{ elevation: 0, borderColor: '#c51e1e', marginTop: 40}}>
             <View style={styles.cardView}>
                 <Icon
                     raised

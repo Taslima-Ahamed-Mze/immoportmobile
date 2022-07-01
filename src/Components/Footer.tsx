@@ -1,71 +1,85 @@
 import React from 'react';
-import { Header } from "@rneui/themed";
-import { Image, Button, View, Text, ScrollView, StyleSheet ,Pressable} from 'react-native';
+import { Icon } from "@rneui/themed";
+import { View, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
 const styles = StyleSheet.create({
     footerView: {
-        display: 'flex', 
-        flexDirection:'row',
-        justifyContent: 'center', 
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
         alignItems: 'center',
-        height:70,
-        backgroundColor:'#e2e2e2'
+        height: 70,
+        backgroundColor: '#e2e2e2'
     },
-    
+
     image: {
-        width: 75, 
+        width: 75,
         height: 50,
-        margin:10
+        margin: 10
     },
-    text:{
-        color:'black',
-        fontWeight: 'bold', 
+    text: {
+        color: 'black',
+        fontWeight: 'bold',
         fontSize: 25
     }
 })
 
+const FooterComponent = () => {
+
+    const navigation = useNavigation();
 
 
-
-const FooterComponent = ()=>{
-
-    const navigation = useNavigation(); 
-
-
-    return(
+    return (
 
         <View style={styles.footerView}>
 
-            <Pressable onPress={()=>navigation.navigate('Prospections')}>
-                <Image
-                    style={styles.image}
-                    source={require('../../Assets/images/note.png')}
+            <Pressable onPress={() => navigation.navigate('Home')}>
+                <Icon
+                    raised
+                    name='home'
+                    type='font-awesome'
+                    color='#c51e1e'
                 />
             </Pressable>
 
-            <Pressable onPress={()=>navigation.navigate('Calendar')}>
-                <Image
-                    style={styles.image}
-                    source={require('../../Assets/images/agenda.png')}
+            <Pressable onPress={() => navigation.navigate('Prospections')}>
+                <Icon
+                    raised
+                    name='file-text-o'
+                    type='font-awesome'
+                    color='#c51e1e'
                 />
             </Pressable>
-            
-            <Pressable onPress={()=>navigation.navigate('Document')}>
-                <Image
-                    style={styles.image}
-                    source={require('../../Assets/images/docs.png')}
+
+            <Pressable onPress={() => navigation.navigate('Calendar')}>
+                <Icon
+                    raised
+                    name='calendar'
+                    type='font-awesome'
+                    color='#c51e1e'
                 />
             </Pressable>
-            
-            <Pressable onPress={()=>navigation.navigate('Login')}>
-                <Image
-                    style={styles.image}
-                    source={require('../../Assets/images/logout.png')}
+
+            <Pressable onPress={() => navigation.navigate('Document')}>
+                <Icon
+                    raised
+                    name='folder-o'
+                    type='font-awesome'
+                    color='#c51e1e'
                 />
             </Pressable>
-           
+
+            <Pressable onPress={() => navigation.navigate('Login')}>
+                <Icon
+                    raised
+                    name='sign-out'
+                    type='font-awesome'
+                    color='#c51e1e'
+                />
+            </Pressable>
+
 
         </View>
     );

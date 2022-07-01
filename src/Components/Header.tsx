@@ -1,18 +1,15 @@
 import React from 'react';
-import { Header, Icon } from "@rneui/themed";
-import { Image, Button, View, Text } from 'react-native';
-
+import { Header } from "@rneui/themed";
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import { getProfile } from '../Api/Auth';
 import AuthContext from '../Contexts/AuthContext';
 import Employee from '../Interfaces/Employee';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUserAlt, faUserAstronaut, faUserCircle, faUserClock, faUserCog, faUserGear, faUserGroup, faUserLargeSlash, faUserMd, faUsersRays, faUserTimes } from '@fortawesome/free-solid-svg-icons';
-
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Avatar = () => {
     return (
-        <FontAwesomeIcon icon={faUserCircle} color="#c51e1e" size={40}  />
+        <FontAwesomeIcon icon={faUserCircle} color="#c51e1e" size={40} />
     );
 }
 const HeaderComponent = () => {
@@ -47,9 +44,9 @@ const HeaderComponent = () => {
         <Header
             placement="center"
             backgroundColor='#e2e2e2'
+            elevated
             leftComponent={<Avatar />}
-            centerComponent={{ text: user.firstname + ' ' + user.lastname, style: { color: '#000000', fontWeight: 'bold', fontSize: 22 } }}
-
+            centerComponent={{ text: user.firstname + ' ' + user.lastname, style: { color: '#000000', fontWeight: '100', fontSize: 30 } }}
         />
     );
 
