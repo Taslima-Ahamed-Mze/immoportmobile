@@ -274,7 +274,7 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Catégorie du bien</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyCategory != null && propertyCategory.map((item, key) => (
+                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
                                         <CheckBox
                                             title={item.name}
                                             checked={false}
@@ -287,88 +287,6 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
 
-                            <Text style={styles.label}>Type de chauffage</Text>
-                            <View style={styles.row}>
-                                {
-                                    propertyHeater != null && propertyHeater.map((item, key) => (
-                                        <CheckBox
-                                            title={item.name}
-                                            checked={false}
-                                            checkedColor="#c51e1e"
-                                            key={key}
-                                        />
-                                    ))
-                                }
-                            </View>
-
-                            <Pressable
-                                style={styles.buttonAction}
-                                onPress={second}>
-                                <Text style={styles.label}>Suivant</Text>
-                            </Pressable>
-                        </View>
-                    }
-
-                    {/* 2nd step */}
-                    {viewType === 2 &&
-                        <View>
-                            <Text h1>2</Text>
-
-                            <Text style={styles.label}>Type de cuisine</Text>
-                            <View style={styles.row}>
-                                {
-                                    propertyKitchen != null && propertyKitchen.map((item, key) => (
-                                        <CheckBox
-                                            title={item.name}
-                                            checked={false}
-                                            checkedColor="#c51e1e"
-                                            key={key}
-                                        />
-                                    ))
-                                }
-                            </View>
-
-                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
-
-                            <Text style={styles.label}>N° de parking</Text>
-                            <TextInput
-                                style={{ width: 100, borderColor: 'black', borderWidth: 0.5, alignSelf: 'center', marginTop: 20 }} />
-                            <Text style={styles.inputError}>{inputError?.name}</Text>
-
-                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
-
-                            <Text style={styles.label}>Types de pièces</Text>
-                            <View style={styles.row}>
-                                {
-                                    propertyRoomType != null && propertyRoomType.map((item, key) => (
-                                        <CheckBox
-                                            title={item.name}
-                                            checked={false}
-                                            checkedColor="#c51e1e"
-                                            key={key}
-                                        />
-                                    ))
-                                }
-                            </View>
-
-                            <Pressable
-                                style={styles.buttonAction}
-                                onPress={third}>
-                                <Text style={styles.label}>Suivant</Text>
-                            </Pressable>
-                            <Pressable
-                                style={styles.buttonAction}
-                                onPress={first}>
-                                <Text style={styles.label}>Précédent</Text>
-                            </Pressable>
-                        </View>
-                    }
-
-
-                    {/* 3rd step */}
-                    {viewType === 3 &&
-                        <View>
-                            <Text h1>3</Text>
                             <Text style={styles.label}>Nom</Text>
                             <TextInput
                                 onChangeText={(name) => setName(name)}
@@ -401,16 +319,112 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Pressable
                                 style={styles.buttonAction}
-                                onPress={fourth}>
+                                onPress={second}>
                                 <Text style={styles.label}>Suivant</Text>
                             </Pressable>
 
+                        </View>
+                    }
+
+                    {/* 2nd step */}
+                    {viewType === 2 &&
+                        <View>
+                            <Text h1>2</Text>
+
+                            <Text style={styles.label}>Type de cuisine</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Types de pièces</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <Text style={styles.label}>Type de chauffage</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                                <CheckBox
+                                    title="Bien meublé"
+                                    checked={isFurnished}
+                                    onPress={() => setIsFurnished(!isFurnished)}
+                                    checkedColor="#c51e1e" />
+                            </View>
+
                             <Pressable
                                 style={styles.buttonAction}
-                                onPress={second}>
+                                onPress={third}>
+                                <Text style={styles.label}>Suivant</Text>
+                            </Pressable>
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={first}>
                                 <Text style={styles.label}>Précédent</Text>
                             </Pressable>
+                        </View>
+                    }
 
+
+                    {/* 3rd step */}
+                    {viewType === 3 &&
+                        <View>
+                            <Text h1>3</Text>
+
+                            <Text style={styles.label}>Features & Salle d'eau</Text>
+                            <View style={styles.row}>
+                                {
+                                    propertyFeature != null && propertyFeature.map((item, key) => (
+                                        <CheckBox
+                                            title={item.name}
+                                            checked={false}
+                                            checkedColor="#c51e1e"
+                                            key={key}
+                                        />
+                                    ))
+                                }
+                            </View>
+
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={fourth}>
+                                <Text style={styles.label}>Suivant</Text>
+                            </Pressable>
                         </View>
                     }
 
@@ -418,20 +432,7 @@ const ProspectionFormScreen = ({ }) => {
                     {viewType === 4 &&
                         <View>
                             <Text h1>4</Text>
-                            <Text style={styles.label}>Description</Text>
-                            <TextInput
-                                onChangeText={(description) => setDescription(description)}
-                                style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.description}</Text>
 
-                            <Text style={styles.label}>Prix</Text>
-                            <TextInput
-                                onChangeText={(price) => setPrice(price)}
-                                keyboardType="numeric"
-                                style={styles.input}>
-                                €
-                            </TextInput>
-                            <Text style={styles.inputError}>{inputError?.price}</Text>
 
                             <Text style={styles.label}>Surface</Text>
                             <TextInput
@@ -442,14 +443,20 @@ const ProspectionFormScreen = ({ }) => {
                             </TextInput>
                             <Text style={styles.inputError}>{inputError?.surface}</Text>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                                <CheckBox
-                                    title="Bien meublé"
-                                    checked={isFurnished}
-                                    onPress={() => setIsFurnished(!isFurnished)}
-                                    checkedColor="#c51e1e" />
-                                {/* <Text style={styles.inputError}>{inputError?.isFurnished}</Text> */}
-                            </View>
+                            <Text style={styles.label}>Prix</Text>
+                            <TextInput
+                                onChangeText={(price) => setPrice(price)}
+                                keyboardType="numeric"
+                                style={styles.input}>
+                                €
+                            </TextInput>
+                            <Text style={styles.inputError}>{inputError?.price}</Text>
+
+                            <Text style={styles.label}>Description</Text>
+                            <TextInput
+                                onChangeText={(description) => setDescription(description)}
+                                style={styles.input} />
+                            <Text style={styles.inputError}>{inputError?.description}</Text>
 
                             <Text style={styles.formError}>{formError}</Text>
 
