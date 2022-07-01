@@ -1,6 +1,6 @@
-import { Card, CheckBox, Divider, Icon, Text } from '@rneui/base';
+import { CheckBox, Divider, Text } from '@rneui/base';
 import React, { useEffect, useState } from 'react';
-import { Alert, BackHandler, Button, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, BackHandler, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import { createProperty, getPropertyCategories, getPropertyFeatures, getPropertyHeaters, getPropertyKitchens, getPropertyRoomTypes, getPropertyTypes } from '../Api/Property';
 import FooterComponent from '../Components/Footer';
@@ -90,12 +90,13 @@ const ProspectionFormScreen = ({ }) => {
     };
 
     const [token, setToken] = React.useState<string | null>()
-    const [propertyType, setPropertyType] = useState<boolean | string | number>()
-    const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>()
-    const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>()
-    const [propertyKitchen, setPropertyKitchen] = useState<PropertyFeatures[]>()
-    const [propertyRoomType, setPropertyRoomType] = useState<PropertyFeatures[]>()
-    const [propertyFeature, setPropertyFeature] = useState<PropertyFeatures[]>()
+
+    const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
+    const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
+    const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
+    const [propertyKitchen, setPropertyKitchen] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
+    const [propertyRoomType, setPropertyRoomType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
+    const [propertyFeature, setPropertyFeature] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [name, setName] = useState<string | undefined>()
     const [price, setPrice] = useState<string>()
     const [address, setAddress] = useState<string | undefined>()
@@ -105,14 +106,13 @@ const ProspectionFormScreen = ({ }) => {
     const [description, setDescription] = useState<string | undefined>()
     const [surface, setSurface] = useState<string | undefined>()
     const [isFurnished, setIsFurnished] = useState(false)
-    const [isAvailable, setIsAvailable] = useState(false)
 
     const [formError, setFormError] = React.useState<string | null>(null)
     const [inputError, setInputError] = useState<Property | null>(null)
 
     const MMKV = new MMKVLoader().initialize()
 
-    // const data = [propertyType, name, price, address, addition_address, zipcode, city, description, surface, floor, isFurnished, isAvailable]
+    const data = [propertyType, name, price, address, addition_address, zipcode, city, description, surface, isFurnished]
 
     /* send form creation after submit */
     React.useEffect(() => {
@@ -120,6 +120,7 @@ const ProspectionFormScreen = ({ }) => {
     }, [token])
 
     const handleSubmit = () => {
+
         if (
             typeof token == "string" &&
             typeof name == "string" &&
@@ -131,18 +132,23 @@ const ProspectionFormScreen = ({ }) => {
             typeof description == "string" &&
             typeof surface == "string" &&
             typeof isFurnished == "boolean" &&
-            typeof isAvailable == "boolean" &&
             typeof propertyType == "number" &&
-            typeof propertyCategory == "number") {
-
-            createProperty(token, name, parseInt(price), address, addition_address, zipcode, city, description, parseInt(surface), isFurnished, isAvailable, propertyType, propertyCategory)
+            typeof propertyKitchen == "number" &&
+            typeof propertyHeater == "number" &&
+            typeof propertyCategory == "string" &&
+            typeof propertyRoomType == "string" &&
+            typeof propertyFeature == "string"
+        ) {
+            createProperty(token, name, price, address, addition_address, zipcode, city, description, surface, isFurnished, propertyType, propertyCategory, propertyKitchen, propertyHeater, propertyRoomType, propertyFeature)
 
                 .then((response) => {
                     if (response.status == 201) {
+                        console.log(response)
                         Alert.alert('enregistré!')
                     } else if (response.status == 409) {
                         console.log("409: " + response.data.message)
                     } else if (response.status == 422) {
+                        console.log(response)
                         const { name, price, address, addition_address, zipcode, city, description, surface }: Property = response.data
 
                         const propertyInterface: Property = {
@@ -155,15 +161,8 @@ const ProspectionFormScreen = ({ }) => {
                             description: description,
                             surface: surface,
                             isFurnished: isFurnished,
-                            isAvailable: isAvailable,
                         }
-
                         setInputError(propertyInterface)
-
-                        const { ...propertyType }: PropertyFeatures = response.data
-                        const propertyFeaturesInterface: PropertyFeatures = {
-                            isChecked: propertyType.isChecked
-                        }
                     }
                 })
                 .catch((error) => {
@@ -184,6 +183,9 @@ const ProspectionFormScreen = ({ }) => {
         getPropertyTypes()
             .then(response => {
                 setPropertyType(response)
+            })
+            .catch(error => {
+                console.log(error)
             })
 
     }, [])
@@ -234,16 +236,6 @@ const ProspectionFormScreen = ({ }) => {
 
     }, [])
 
-    // const checkHandler = (item: { id: string | number; name: string; }) => () => {
-    //     setPropertyType((propertyType) => ({
-    //         ...propertyType,
-    //         [item.id]: propertyType[item.id] ? null : {
-    //             id: item.id,
-    //             name: item.name
-    //         }
-    //     }))
-    // }
-
     return (
         <View style={{ flex: 1, padding: 10 }}>
             <ScrollView>
@@ -257,14 +249,18 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Type de bien</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
-                                        <CheckBox
-                                            title={item.name}
-                                            checkedColor="#c51e1e"
-                                            checked={item.isChecked}
-                                            key={key}
-                                            onPress={() => setPropertyType(!item.isChecked)}
-                                        />
+                                    propertyType?.map((item, key) => (
+                                        <TouchableOpacity key={key}>
+                                            <CheckBox
+                                                title={item.name}
+                                                checkedColor="#c51e1e"
+                                                uncheckedIcon="circle-o"
+                                                checkedIcon="dot-circle-o"
+                                                checked={item.isChecked}
+                                                key={item.id}
+                                                onPress={() => setPropertyType([{ ...item, isChecked: !item.isChecked }])}
+                                            />
+                                        </TouchableOpacity>
                                     ))
                                 }
                             </View>
@@ -274,13 +270,18 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Catégorie du bien</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
-                                        <CheckBox
-                                            title={item.name}
-                                            checked={false}
-                                            checkedColor="#c51e1e"
-                                            key={key}
-                                        />
+                                    propertyCategory?.map((item, key) => (
+                                        <TouchableOpacity key={key}>
+                                            <CheckBox
+                                                title={item.name}
+                                                checked={item.isChecked}
+                                                checkedColor="#c51e1e"
+                                                uncheckedIcon="circle-o"
+                                                checkedIcon="dot-circle-o"
+                                                key={item.id}
+                                                onPress={() => setPropertyCategory([{ ...item, isChecked: !item.isChecked }])}
+                                            />
+                                        </TouchableOpacity>
                                     ))
                                 }
                             </View>
@@ -333,16 +334,19 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Text style={styles.label}>Type de cuisine</Text>
                             <View style={styles.row}>
-                                {
-                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
-                                        <CheckBox
-                                            title={item.name}
-                                            checked={false}
-                                            checkedColor="#c51e1e"
-                                            key={key}
-                                        />
+                                {/* {
+                                    propertyKitchen?.map((item, key) => (
+                                        <TouchableOpacity key={key}>
+                                            <CheckBox
+                                                title={item.name}
+                                                checkedColor="#c51e1e"
+                                                checked={item.isChecked}
+                                                key={item.id}
+                                                onPress={() => setPropertyKitchen([{ ...item, isChecked: !item.isChecked }])}
+                                            />
+                                        </TouchableOpacity>
                                     ))
-                                }
+                                } */}
                             </View>
 
                             <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
@@ -350,12 +354,16 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Types de pièces</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
+                                    propertyRoomType?.map((item, key) => (
                                         <CheckBox
                                             title={item.name}
-                                            checked={false}
                                             checkedColor="#c51e1e"
+                                            checked={item.isChecked}
+                                            iconType="material"
+                                            checkedIcon="clear"
+                                            uncheckedIcon="add"
                                             key={key}
+                                            onPress={() => setPropertyRoomType([{ ...item, isChecked: !item.isChecked }])}
                                         />
                                     ))
                                 }
@@ -365,16 +373,17 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Text style={styles.label}>Type de chauffage</Text>
                             <View style={styles.row}>
-                                {
-                                    propertyType != null && propertyType.map((item: { name: string; isChecked: boolean; }, key: React.Key | null | undefined) => (
+                                {/* {
+                                    propertyHeater?.map((item, key) => (
                                         <CheckBox
                                             title={item.name}
-                                            checked={false}
                                             checkedColor="#c51e1e"
+                                            checked={item.isChecked}
                                             key={key}
+                                            onPress={() => setPropertyHeater([{ ...item, isChecked: !item.isChecked }])}
                                         />
                                     ))
-                                }
+                                } */}
                             </View>
 
                             <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
@@ -383,6 +392,8 @@ const ProspectionFormScreen = ({ }) => {
                                 <CheckBox
                                     title="Bien meublé"
                                     checked={isFurnished}
+                                    checkedIcon="dot-circle-o"
+                                    uncheckedIcon="circle-o"
                                     onPress={() => setIsFurnished(!isFurnished)}
                                     checkedColor="#c51e1e" />
                             </View>
@@ -409,12 +420,16 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Features & Salle d'eau</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyFeature != null && propertyFeature.map((item, key) => (
+                                    propertyFeature?.map((item, key) => (
                                         <CheckBox
                                             title={item.name}
-                                            checked={false}
                                             checkedColor="#c51e1e"
+                                            checked={item.isChecked}
+                                            checkedIcon="clear"
+                                            uncheckedIcon="add"
+                                            iconType="material"
                                             key={key}
+                                            onPress={() => setPropertyFeature([{ ...item, isChecked: !item.isChecked }])}
                                         />
                                     ))
                                 }
@@ -425,14 +440,18 @@ const ProspectionFormScreen = ({ }) => {
                                 onPress={fourth}>
                                 <Text style={styles.label}>Suivant</Text>
                             </Pressable>
+                            <Pressable
+                                style={styles.buttonAction}
+                                onPress={second}>
+                                <Text style={styles.label}>Précédent</Text>
+                            </Pressable>
                         </View>
                     }
 
-                    {/* 3rd step */}
+                    {/* 4th step */}
                     {viewType === 4 &&
                         <View>
                             <Text h1>4</Text>
-
 
                             <Text style={styles.label}>Surface</Text>
                             <TextInput

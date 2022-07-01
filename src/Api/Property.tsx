@@ -12,9 +12,13 @@ export const createProperty = async (
     description: string,
     surface: string,
     is_furnished: boolean,
-    is_available: boolean,
     id_property_type: number,
-    id_property_category: number
+    id_property_category: number,
+    id_kitchen: number,
+    id_heater: number,
+    room: string,
+    feature: string
+
 ) => {
     const data = {
         name,
@@ -26,9 +30,12 @@ export const createProperty = async (
         description,
         surface,
         is_furnished,
-        is_available,
         id_property_type,
-        id_property_category
+        id_property_category,
+        id_kitchen,
+        id_heater,
+        room,
+        feature
     }
     return customAxios.post("property/new", data, {
         headers: {

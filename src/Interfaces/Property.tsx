@@ -8,7 +8,6 @@ interface Property {
     description: string | undefined
     surface: string | undefined
     isFurnished: boolean | undefined
-    isAvailable: boolean | undefined
 }
 
 export default Property
