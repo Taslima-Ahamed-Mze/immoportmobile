@@ -4,52 +4,59 @@ import React from 'react'
 import {
     StyleSheet,
     View,
-    Button,
     TextInput,
     Text,
     Pressable,
-    TouchableHighlight,
+    Image,
 } from 'react-native'
 import { login } from '../Api/Auth'
-import AuthContext from '../Contexts/AuthContext'
 import Login from '../Interfaces/Login'
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 24,
+        backgroundColor: 'white',
+        paddingVertical: 120
+    },
+    image: {
+        width: 100,
+        height: 100,
+        alignSelf: "center",
+        marginBottom: 30
     },
     button: {
         borderColor: 'red',
-        backgroundColor: 'red',
+        backgroundColor: '#e40909',
         opacity: 0.9,
-        padding: 20,
+        padding: 15,
         borderRadius: 10,
         flexDirection: 'row',
         textAlign: 'center',
-        width: 250,
-        alignSelf:'center',
+        width: 200,
+        alignSelf: 'center',
+
     },
     input: {
         height: 40,
         margin: 12,
         borderRadius: 10,
         borderWidth: 0.5,
-        padding: 15,
         color: "black"
     },
     label: {
         color: "black",
         fontWeight: "bold",
-        textAlign:'center',
-        textTransform: 'uppercase'
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        letterSpacing: 4,
     },
     text: {
-        fontWeight: "bold",
         color: "white",
         fontSize: 20,
         marginRight: 25,
-        textAlign: 'center'
+        textAlign: 'center',
+        textTransform: 'uppercase',
     },
     inputError: {
         fontWeight: "bold",
@@ -104,6 +111,10 @@ const LoginScreen = ({ navigation }: any) => {
     return (
         <View style={styles.container}>
 
+            <Image
+                style={styles.image}
+                source={require('../../Assets/images/logo.webp')}
+            />
             <Text style={styles.label}>Matricule</Text>
             <TextInput
                 style={styles.input}
