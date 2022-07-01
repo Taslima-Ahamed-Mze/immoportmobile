@@ -89,8 +89,8 @@ const ProspectionFormScreen = ({ }) => {
         setViewType(4);
     };
 
-    const [token, setToken] = React.useState<string | null>()
-
+    const [token, setToken] = useState<string | null>()
+    const [checked, setChecked] = useState(false)
     const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
@@ -107,7 +107,7 @@ const ProspectionFormScreen = ({ }) => {
     const [surface, setSurface] = useState<string | undefined>()
     const [isFurnished, setIsFurnished] = useState(false)
 
-    const [formError, setFormError] = React.useState<string | null>(null)
+    const [formError, setFormError] = useState<string | null>(null)
     const [inputError, setInputError] = useState<Property | null>(null)
 
     const MMKV = new MMKVLoader().initialize()
@@ -236,6 +236,11 @@ const ProspectionFormScreen = ({ }) => {
 
     }, [])
 
+    const onChange = (value: boolean | ((prevState: boolean) => boolean) | { value: boolean; id: number; name: string; isChecked: boolean; }[]) => {
+        console.log(value)
+        setChecked(value)
+    }
+    
     return (
         <View style={{ flex: 1, padding: 10 }}>
             <ScrollView>
@@ -258,7 +263,7 @@ const ProspectionFormScreen = ({ }) => {
                                                 checkedIcon="dot-circle-o"
                                                 checked={item.isChecked}
                                                 key={item.id}
-                                                onPress={() => setPropertyType([{ ...item, isChecked: !item.isChecked }])}
+                                                onPress={() => onChange([{ ...item, value: !item.isChecked }])}
                                             />
                                         </TouchableOpacity>
                                     ))
@@ -279,7 +284,7 @@ const ProspectionFormScreen = ({ }) => {
                                                 uncheckedIcon="circle-o"
                                                 checkedIcon="dot-circle-o"
                                                 key={item.id}
-                                                onPress={() => setPropertyCategory([{ ...item, isChecked: !item.isChecked }])}
+                                                onPress={() => onChange([{ ...item, value: !item.isChecked }])}
                                             />
                                         </TouchableOpacity>
                                     ))
