@@ -9,6 +9,7 @@ import ProspectionScreen from './src/Screens/ProspectionScreen'
 import DocumentScreen from './src/Screens/DocumentScreen'
 import ProspectionFormScreen from './src/Screens/ProspectionFormScreen'
 import { Calendar } from 'react-native-calendars'
+import DetailProspect from './src/Screens/DetailProspectScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -25,6 +26,7 @@ function App() {
         <Stack.Screen name="Document" component={DocumentScreen} options={{ title: 'Documents' }} />
         <Stack.Screen name="Prospect" component={ProspectionFormScreen} options={{ title: 'Créer un prospect' }} />
         <Stack.Screen name="Prospections" component={ProspectionScreen} />
+        <Stack.Screen name="DetailProspect" component={DetailProspect} />
 
       </Stack.Navigator>
     </NavigationContainer>
