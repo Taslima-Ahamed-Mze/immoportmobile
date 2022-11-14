@@ -1,4 +1,3 @@
-import PropertyType from "../Interfaces/PropertyFeatures";
 import customAxios from "./BaseUrl";
 
 export const createProperty = async (
@@ -12,12 +11,11 @@ export const createProperty = async (
     description: string,
     surface: string,
     is_furnished: boolean,
+    is_available: boolean,
     id_property_type: number,
     id_property_category: number,
-    id_kitchen: number,
-    id_heater: number,
-    room: string,
-    feature: string
+    id_kitchen: string,
+    id_heater: string
 
 ) => {
     const data = {
@@ -33,23 +31,19 @@ export const createProperty = async (
         id_property_type,
         id_property_category,
         id_kitchen,
-        id_heater,
-        room,
-        feature
+        id_heater
     }
-    return customAxios.post("property/new", data, {
+    return customAxios.post("property/new", { property: data }, {
         headers: {
             Authorization: `Bearer ${token}`,
         }
     })
         .then((response) => {
             console.log("RESP " + response)
-
             return response
         })
         .catch((error) => {
             console.log("resp error: " + error)
-
             return error.response
         })
 }

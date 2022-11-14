@@ -36,29 +36,23 @@ const Prospections = ({ navigation }: any) => {
 
     const [dataProperty, setDataProperty] = useState<Array<Property> | null>(null)
     const [token, setToken] = useState<string | null>()
-    const user = React.useContext(AuthContext)
-
-    const id_employee = user.id;
 
     useEffect(() => {
 
         if (token != null) {
-            getEmployeeProperties(id_employee as number, token)
+            getEmployeeProperties(token)
                 .then(response => {
-                    setDataProperty(response.data)
+                    setDataProperty(response.property)
                 }).catch((error) => {
                     console.log(error, 'catch screen');
                 });
         } else {
-            console.log('token is null')
             MMKV.getStringAsync("access_token").then(token => {
                 if (typeof token == "string") {
                     setToken(token)
                 }
             })
-
         }
-
     }, [token])
 
     return (
@@ -72,10 +66,9 @@ const Prospections = ({ navigation }: any) => {
                             <TouchableOpacity
                                 onPress={() => navigation.navigate('DetailProspect', { data: item.id })}
                             >
-
                                 <Card containerStyle={{ borderColor: '#e2e2e2', backgroundColor: '#e2e2e2' }}>
                                     <View style={styles.cardComponent} >
-                                        <Text style={styles.text}>{item.property.name}</Text>
+                                        <Text style={styles.text}>{item.name}</Text>
                                         <Icon
                                             name='delete'
                                             color='#ef3a5d'
@@ -83,7 +76,6 @@ const Prospections = ({ navigation }: any) => {
                                     </View>
                                 </Card>
                             </TouchableOpacity>
-
                         ))
                     }
                 </View>
@@ -113,10 +105,6 @@ const Prospections = ({ navigation }: any) => {
                 <FooterComponent />
             </View>
         </View>
-
-
     );
-
-
 }
 export default Prospections;

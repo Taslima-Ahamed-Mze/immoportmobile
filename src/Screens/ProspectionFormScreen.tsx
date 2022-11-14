@@ -106,13 +106,12 @@ const ProspectionFormScreen = ({ }) => {
     const [description, setDescription] = useState<string | undefined>()
     const [surface, setSurface] = useState<string | undefined>()
     const [isFurnished, setIsFurnished] = useState(false)
-
     const [formError, setFormError] = React.useState<string | null>(null)
     const [inputError, setInputError] = useState<Property | null>(null)
 
     const MMKV = new MMKVLoader().initialize()
 
-    const data = [propertyType, name, price, address, addition_address, zipcode, city, description, surface, isFurnished]
+    const data = [token, propertyType, name, price, address, addition_address, zipcode, city, description, surface, isFurnished]
 
     /* send form creation after submit */
     React.useEffect(() => {
@@ -120,7 +119,7 @@ const ProspectionFormScreen = ({ }) => {
     }, [token])
 
     const handleSubmit = () => {
-
+        console.log(token)
         if (
             typeof token == "string" &&
             typeof name == "string" &&
@@ -139,7 +138,7 @@ const ProspectionFormScreen = ({ }) => {
             typeof propertyRoomType == "string" &&
             typeof propertyFeature == "string"
         ) {
-            createProperty(token, name, price, address, addition_address, zipcode, city, description, surface, isFurnished, propertyType, propertyCategory, propertyKitchen, propertyHeater, propertyRoomType, propertyFeature)
+            createProperty(token, name, price, address, addition_address, zipcode, city, description, surface, isFurnished, propertyType, propertyCategory, propertyKitchen, propertyHeater)
 
                 .then((response) => {
                     if (response.status == 201) {
@@ -149,7 +148,7 @@ const ProspectionFormScreen = ({ }) => {
                         console.log("409: " + response.data.message)
                     } else if (response.status == 422) {
                         console.log(response)
-                        const { name, price, address, addition_address, zipcode, city, description, surface }: Property[] = response.data
+                        const { name, price, address, addition_address, zipcode, city, description, surface }: Property = response.data
 
                         const propertyInterface: Property[] = {
                             name: name,
@@ -169,6 +168,7 @@ const ProspectionFormScreen = ({ }) => {
                     console.log("error:" + error)
                 })
         } else {
+            console.log(data)
             setFormError("Le formulaire ne peut être vide!")
             MMKV.getStringAsync("access_token").then(token => {
                 if (typeof token == "string") {
@@ -293,31 +293,31 @@ const ProspectionFormScreen = ({ }) => {
                             <TextInput
                                 onChangeText={(name) => setName(name)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.name}</Text>
+                            <Text style={styles.inputError}>{inputError?.property.name}</Text>
 
                             <Text style={styles.label}>Adresse</Text>
                             <TextInput
                                 onChangeText={(address) => setAddress(address)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.address}</Text>
+                            <Text style={styles.inputError}>{inputError?.property.address}</Text>
 
                             <Text style={styles.label}>Adresse2</Text>
                             <TextInput
                                 onChangeText={(addition_address) => setAdditionAddress(addition_address)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.addition_address}</Text>
+                            <Text style={styles.inputError}>{inputError?.property.addition_address}</Text>
 
                             <Text style={styles.label}>Code postal</Text>
                             <TextInput
                                 onChangeText={(zipcode) => setZipcode(zipcode)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.zipcode}</Text>
+                            <Text style={styles.inputError}>{inputError?.property.zipcode}</Text>
 
                             <Text style={styles.label}>Ville</Text>
                             <TextInput
                                 onChangeText={(city) => setCity(city)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.city}</Text>
+                            <Text style={styles.inputError}>{inputError?.property.city}</Text>
 
                             <Pressable
                                 style={styles.buttonAction}
@@ -335,8 +335,8 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Text style={styles.label}>Type de cuisine</Text>
                             <View style={styles.row}>
-                                {/* {
-                                    propertyKitchen?.map((item, key) => (
+                                {
+                                    propertyKitchen != null && propertyKitchen?.map((item, key) => (
                                         <TouchableOpacity key={key}>
                                             <CheckBox
                                                 title={item.name}
@@ -347,7 +347,7 @@ const ProspectionFormScreen = ({ }) => {
                                             />
                                         </TouchableOpacity>
                                     ))
-                                } */}
+                                }
                             </View>
 
                             <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
@@ -374,7 +374,7 @@ const ProspectionFormScreen = ({ }) => {
 
                             <Text style={styles.label}>Type de chauffage</Text>
                             <View style={styles.row}>
-                                {/* {
+                                {
                                     propertyHeater?.map((item, key) => (
                                         <CheckBox
                                             title={item.name}
@@ -384,7 +384,7 @@ const ProspectionFormScreen = ({ }) => {
                                             onPress={() => setPropertyHeater([{ ...item, isChecked: !item.isChecked }])}
                                         />
                                     ))
-                                } */}
+                                }
                             </View>
 
                             <Divider style={{ height: 1, margin: 16, backgroundColor: 'grey' }} />
