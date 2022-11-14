@@ -114,15 +114,14 @@ export const getPropertyFeatures = async () => {
         })
 }
 
-export const getEmployeeProperties = async (id: number, token: string) => {
-    return customAxios.get('property/employee/' + id, {
+export const getEmployeeProperties = async (token: string) => {
+    return customAxios.get('employee/my-properties', {
         headers: {
             Authorization: `Bearer ${token}`,
-        },
+        }
     })
         .then((response) => {
-            console.log(response, 'api');
-            return response.data.property;
+            return response.data;
         })
         .catch(error => {
             return error.response.data
