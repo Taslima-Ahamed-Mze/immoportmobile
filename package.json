@@ -20,6 +20,7 @@
     "@rneui/base": "^4.0.0-rc.4",
     "@rneui/themed": "^4.0.0-rc.4",
     "axios": "^0.27.2",
+    "date-fns": "^2.29.3",
     "react": "^17.0.2",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.31.3",
