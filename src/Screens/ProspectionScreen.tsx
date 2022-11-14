@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Card, Icon } from "@rneui/themed";
-import { Image, Button, View, Text, ScrollView, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { Card, Icon } from "@rneui/themed";
+import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import HeaderComponent from '../Components/Header';
 import FooterComponent from '../Components/Footer';
@@ -62,7 +62,15 @@ const Prospections = ({ navigation }: any) => {
                             <TouchableOpacity
                                 onPress={() => navigation.navigate('DetailProspect', { data: item.id })}
                             >
-                                <Card containerStyle={{ borderColor: '#e2e2e2', backgroundColor: '#e2e2e2' }}>
+                                <Card
+                                    containerStyle={{
+                                        borderColor: '#f13d3d',
+                                        borderWidth: 0.5,
+                                        borderStyle: "solid",
+                                        borderRadius: 5,
+                                        backgroundColor: 'white'
+                                    }}
+                                >
                                     <View style={styles.cardComponent} >
                                         <Text style={styles.text}>{item.name}</Text>
                                         <Icon

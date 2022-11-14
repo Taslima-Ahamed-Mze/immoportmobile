@@ -53,7 +53,7 @@ const FooterComponent = () => {
                 />
             </Pressable>
 
-            <Pressable onPress={() => navigation.navigate('Calendar')}>
+            <Pressable onPress={() => navigation.navigate('Agenda')}>
                 <Icon
                     raised
                     name='calendar'

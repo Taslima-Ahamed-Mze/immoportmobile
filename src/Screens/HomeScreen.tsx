@@ -30,16 +30,16 @@ const HomeScreen = ({ navigation }: any) => {
     return (
         <View>
 
-            <View style={{ padding: 10, backgroundColor: 'white'}}>
+            <View style={{ padding: 10, backgroundColor: 'white' }}>
                 <HeaderComponent />
-                <ScrollView style={{ height: 1000}}>
+                <ScrollView style={{ height: 1000 }}>
 
                     <Pressable onPress={() => navigation.navigate('Prospections')}>
                         <CardDashboard title='Prospections' name={name.note}>
                         </CardDashboard>
                     </Pressable>
 
-                    <Pressable onPress={() => navigation.navigate('Calendar')}>
+                    <Pressable onPress={() => navigation.navigate('Agenda')}>
                         <CardDashboard title='Agenda' name={name.agenda}>
                         </CardDashboard>
                     </Pressable>
