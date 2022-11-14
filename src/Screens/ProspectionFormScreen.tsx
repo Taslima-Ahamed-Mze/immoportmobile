@@ -89,9 +89,9 @@ const ProspectionFormScreen = ({ }) => {
         setViewType(4);
     };
 
-    const [token, setToken] = React.useState<string | null>()
-
+    const [token, setToken] = useState<string | null>()
     const [propertyType, setPropertyType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
+
     const [propertyCategory, setPropertyCategory] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyHeater, setPropertyHeater] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyKitchen, setPropertyKitchen] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
@@ -149,9 +149,9 @@ const ProspectionFormScreen = ({ }) => {
                         console.log("409: " + response.data.message)
                     } else if (response.status == 422) {
                         console.log(response)
-                        const { name, price, address, addition_address, zipcode, city, description, surface }: Property = response.data
+                        const { name, price, address, addition_address, zipcode, city, description, surface }: Property[] = response.data
 
-                        const propertyInterface: Property = {
+                        const propertyInterface: Property[] = {
                             name: name,
                             price: price,
                             address: address,
@@ -248,17 +248,18 @@ const ProspectionFormScreen = ({ }) => {
                             <Text h1>1</Text>
                             <Text style={styles.label}>Type de bien</Text>
                             <View style={styles.row}>
+
                                 {
-                                    propertyType?.map((item, key) => (
-                                        <TouchableOpacity key={key}>
+                                    propertyType != null && propertyType?.map((checkbox, index) => (
+                                        <TouchableOpacity key={index}>
                                             <CheckBox
-                                                title={item.name}
+                                                title={checkbox.name}
                                                 checkedColor="#c51e1e"
                                                 uncheckedIcon="circle-o"
                                                 checkedIcon="dot-circle-o"
-                                                checked={item.isChecked}
-                                                key={item.id}
-                                                onPress={() => setPropertyType([{ ...item, isChecked: !item.isChecked }])}
+                                                key={checkbox.id}
+                                                onPress={() => setPropertyType([{ ...checkbox, isChecked: !checkbox.isChecked }])}
+                                                checked={checkbox.isChecked}
                                             />
                                         </TouchableOpacity>
                                     ))
@@ -270,7 +271,7 @@ const ProspectionFormScreen = ({ }) => {
                             <Text style={styles.label}>Catégorie du bien</Text>
                             <View style={styles.row}>
                                 {
-                                    propertyCategory?.map((item, key) => (
+                                    propertyCategory != null && propertyCategory?.map((item, key) => (
                                         <TouchableOpacity key={key}>
                                             <CheckBox
                                                 title={item.name}

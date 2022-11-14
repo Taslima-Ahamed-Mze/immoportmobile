@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
         paddingVertical: 120
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
         alignSelf: "center",
         marginBottom: 30
     },
@@ -111,7 +111,7 @@ const LoginScreen = ({ navigation }: any) => {
 
             <Image
                 style={styles.image}
-                source={require('../../Assets/images/logo.webp')}
+                source={require('../../Assets/images/logo.png')}
             />
             <Text style={styles.label}>Matricule</Text>
             <TextInput

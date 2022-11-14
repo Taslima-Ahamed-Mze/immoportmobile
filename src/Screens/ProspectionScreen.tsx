@@ -30,9 +30,6 @@ const styles = StyleSheet.create({
     }
 })
 
-
-
-
 const Prospections = ({ navigation }: any) => {
 
     const MMKV = new MMKVLoader().initialize()
@@ -43,15 +40,12 @@ const Prospections = ({ navigation }: any) => {
 
     const id_employee = user.id;
 
-
     useEffect(() => {
 
         if (token != null) {
-            getEmployeeProperties(id_employee, token)
+            getEmployeeProperties(id_employee as number, token)
                 .then(response => {
-                    setDataProperty(response)
-
-
+                    setDataProperty(response.data)
                 }).catch((error) => {
                     console.log(error, 'catch screen');
                 });
@@ -74,9 +68,9 @@ const Prospections = ({ navigation }: any) => {
             <ScrollView>
                 <View>
                     {
-                        dataProperty != null && dataProperty.map(item => (
+                        dataProperty != null && dataProperty?.map(item => (
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('DetailProspect',{data:item.id})}
+                                onPress={() => navigation.navigate('DetailProspect', { data: item.id })}
                             >
 
                                 <Card containerStyle={{ borderColor: '#e2e2e2', backgroundColor: '#e2e2e2' }}>
