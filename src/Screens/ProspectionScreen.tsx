@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Header, Card, Icon } from "@rneui/themed";
 import { Image, Button, View, Text, ScrollView, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity } from 'react-native';
-import AuthContext from '../Contexts/AuthContext';
 import { MMKVLoader } from 'react-native-mmkv-storage';
-
 import HeaderComponent from '../Components/Header';
-import CardDashboard from '../Components/CardDashboard';
 import FooterComponent from '../Components/Footer';
-import { color } from '@rneui/base';
 import Property from '../Interfaces/Property';
 import { getEmployeeProperties } from '../Api/Property';
 

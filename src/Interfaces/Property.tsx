@@ -1,13 +1,13 @@
 interface Property {
-    id: number
+    id: number | undefined
     name: string | undefined
-    price: string
+    price: number | undefined
     address: string | undefined
     addition_address: string | undefined
     zipcode: string | undefined
     city: string | undefined
     description: string | undefined
-    surface: string | undefined
+    surface: number | undefined
     isFurnished: boolean | undefined
     id_property_type: string | undefined
     id_property_category: string | undefined

@@ -1,9 +1,9 @@
 import customAxios from "./BaseUrl";
 
 export const createProperty = async (
-    token: string,
+   
     name: string,
-    price: string,
+    price: number,
     address: string,
     addition_address: string,
     zipcode: string,
@@ -11,11 +11,11 @@ export const createProperty = async (
     description: string,
     surface: string,
     is_furnished: boolean,
-    is_available: boolean,
-    id_property_type: number,
-    id_property_category: number,
+    id_property_type: string,
+    id_property_category: string,
     id_kitchen: string,
-    id_heater: string
+    id_heater: string, 
+    token: string,
 
 ) => {
     const data = {
@@ -36,7 +36,7 @@ export const createProperty = async (
     return customAxios.post("property/new", { property: data }, {
         headers: {
             Authorization: `Bearer ${token}`,
-        }
+        },
     })
         .then((response) => {
             console.log("RESP " + response)

@@ -98,7 +98,7 @@ const ProspectionFormScreen = ({ }) => {
     const [propertyRoomType, setPropertyRoomType] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [propertyFeature, setPropertyFeature] = useState<PropertyFeatures[]>([{ id: 0, name: 'undefined', isChecked: false }])
     const [name, setName] = useState<string | undefined>()
-    const [price, setPrice] = useState<string>()
+    const [price, setPrice] = useState<number>()
     const [address, setAddress] = useState<string | undefined>()
     const [addition_address, setAdditionAddress] = useState<string | undefined>()
     const [zipcode, setZipcode] = useState<string | undefined>()
@@ -111,7 +111,47 @@ const ProspectionFormScreen = ({ }) => {
 
     const MMKV = new MMKVLoader().initialize()
 
-    const data = [token, propertyType, name, price, address, addition_address, zipcode, city, description, surface, isFurnished]
+    const data = [token, propertyType[0].id, name, price, address, addition_address, zipcode, city, description, surface, isFurnished]
+
+    /* retrieve all the property informations */
+    React.useEffect(() => {
+        getPropertyTypes()
+            .then(response => {
+                setPropertyType(response)
+            })
+
+        getPropertyCategories()
+            .then(response => {
+                setPropertyCategory(response)
+            })
+
+        getPropertyHeaters()
+            .then(response => {
+                setPropertyHeater(response)
+            })
+
+        getPropertyKitchens()
+            .then(response => {
+                setPropertyKitchen(response)
+            })
+
+        getPropertyRoomTypes()
+            .then(response => {
+                setPropertyRoomType(response)
+            })
+
+        getPropertyFeatures()
+            .then(response => {
+                setPropertyFeature(response)
+            })
+
+    }, [])
+
+    MMKV.getStringAsync("access_token").then(token => {
+        if (typeof token == "string") {
+            setToken(token)
+        }
+    })
 
     /* send form creation after submit */
     React.useEffect(() => {
@@ -119,122 +159,37 @@ const ProspectionFormScreen = ({ }) => {
     }, [token])
 
     const handleSubmit = () => {
-        console.log(token)
-        if (
-            typeof token == "string" &&
-            typeof name == "string" &&
-            typeof price == "string" &&
-            typeof address == "string" &&
-            typeof addition_address == "string" &&
-            typeof zipcode == "string" &&
-            typeof city == "string" &&
-            typeof description == "string" &&
-            typeof surface == "string" &&
-            typeof isFurnished == "boolean" &&
-            typeof propertyType == "number" &&
-            typeof propertyKitchen == "number" &&
-            typeof propertyHeater == "number" &&
-            typeof propertyCategory == "string" &&
-            typeof propertyRoomType == "string" &&
-            typeof propertyFeature == "string"
-        ) {
-            createProperty(token, name, price, address, addition_address, zipcode, city, description, surface, isFurnished, propertyType, propertyCategory, propertyKitchen, propertyHeater)
+        createProperty(name as string, price as number, address as string, addition_address as string, zipcode as string, city as string, description as string, surface as string, isFurnished, propertyType[0].id, propertyCategory[0].id, propertyKitchen[0].id, propertyHeater[0].id, token as string)
+            .then((response) => {
+                if (response.status == 201) {
+                    Alert.alert('enregistré!')
+                } else if (response.status == 409) {
+                    console.log("409: " + response.data)
+                } else if (response.status == 422) {
+                    console.log(response.data)
+                    const { name, price, address, addition_address, zipcode, city, description, surface }: Property = response
+                    console.log("NAME " + price)
 
-                .then((response) => {
-                    if (response.status == 201) {
-                        console.log(response)
-                        Alert.alert('enregistré!')
-                    } else if (response.status == 409) {
-                        console.log("409: " + response.data.message)
-                    } else if (response.status == 422) {
-                        console.log(response)
-                        const { name, price, address, addition_address, zipcode, city, description, surface }: Property = response.data
-
-                        const propertyInterface: Property[] = {
-                            name: name,
-                            price: price,
-                            address: address,
-                            addition_address: addition_address,
-                            zipcode: zipcode,
-                            city: city,
-                            description: description,
-                            surface: surface,
-                            isFurnished: isFurnished,
-                        }
-                        setInputError(propertyInterface)
+                    const propertyInterface: Property = {
+                        name: name,
+                        price: price,
+                        address: address,
+                        addition_address: addition_address,
+                        zipcode: zipcode,
+                        city: city,
+                        description: description,
+                        surface: surface,
+                        isFurnished: isFurnished,
+                        id_property_type: propertyType[0].id,
+                        id_property_category: propertyCategory[0].id,
+                        id_kitchen: propertyKitchen[0].id,
+                        id_heater: propertyHeater[0].id,
+                        id: undefined
                     }
-                })
-                .catch((error) => {
-                    console.log("error:" + error)
-                })
-        } else {
-            console.log(data)
-            setFormError("Le formulaire ne peut être vide!")
-            MMKV.getStringAsync("access_token").then(token => {
-                if (typeof token == "string") {
-                    setToken(token)
+                    setInputError(propertyInterface)
                 }
             })
-        }
     }
-
-    /* retrieve all the property types */
-    React.useEffect(() => {
-        getPropertyTypes()
-            .then(response => {
-                setPropertyType(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
-    }, [])
-
-    /* retrieve all the property categories */
-    React.useEffect(() => {
-        getPropertyCategories()
-            .then(response => {
-                setPropertyCategory(response)
-            })
-
-    }, [])
-
-    /* retrieve all the property heaters */
-    React.useEffect(() => {
-        getPropertyHeaters()
-            .then(response => {
-                setPropertyHeater(response)
-            })
-
-    }, [])
-
-
-    /* retrieve all the property kitchen's types */
-    React.useEffect(() => {
-        getPropertyKitchens()
-            .then(response => {
-                setPropertyKitchen(response)
-            })
-
-    }, [])
-
-    /* retrieve all the property room's types */
-    React.useEffect(() => {
-        getPropertyRoomTypes()
-            .then(response => {
-                setPropertyRoomType(response)
-            })
-
-    }, [])
-
-    /* retrieve all the property room's types */
-    React.useEffect(() => {
-        getPropertyFeatures()
-            .then(response => {
-                setPropertyFeature(response)
-            })
-
-    }, [])
 
     return (
         <View style={{ flex: 1, padding: 10 }}>
@@ -293,31 +248,31 @@ const ProspectionFormScreen = ({ }) => {
                             <TextInput
                                 onChangeText={(name) => setName(name)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.property.name}</Text>
+                            <Text style={styles.inputError}>{inputError?.name}</Text>
 
                             <Text style={styles.label}>Adresse</Text>
                             <TextInput
                                 onChangeText={(address) => setAddress(address)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.property.address}</Text>
+                            <Text style={styles.inputError}>{inputError?.address}</Text>
 
                             <Text style={styles.label}>Adresse2</Text>
                             <TextInput
                                 onChangeText={(addition_address) => setAdditionAddress(addition_address)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.property.addition_address}</Text>
+                            <Text style={styles.inputError}>{inputError?.addition_address}</Text>
 
                             <Text style={styles.label}>Code postal</Text>
                             <TextInput
                                 onChangeText={(zipcode) => setZipcode(zipcode)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.property.zipcode}</Text>
+                            <Text style={styles.inputError}>{inputError?.zipcode}</Text>
 
                             <Text style={styles.label}>Ville</Text>
                             <TextInput
                                 onChangeText={(city) => setCity(city)}
                                 style={styles.input} />
-                            <Text style={styles.inputError}>{inputError?.property.city}</Text>
+                            <Text style={styles.inputError}>{inputError?.city}</Text>
 
                             <Pressable
                                 style={styles.buttonAction}

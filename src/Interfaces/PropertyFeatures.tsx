@@ -1,5 +1,5 @@
 interface PropertyFeatures {
-    id: number,
+    id: string,
     name: string,
     isChecked: boolean
 }
