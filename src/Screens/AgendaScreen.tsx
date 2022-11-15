@@ -33,7 +33,26 @@ const AgendaScreen = ({ navigation }: any) => {
     return (
         <View style={{ flex: 1, padding: 10 }}>
             <HeaderComponent />
+            <Text style={{ color: '#f13d3d', fontFamily: 'HomemadeApple-Regular', marginTop: 15, textAlign: 'center', fontSize: 20 }}>Mes rdv</Text>
             <ScrollView>
+                <TouchableHighlight
+                    style={{
+                        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+                        width: 50,
+                        height: 50,
+                        backgroundColor: '#e2e2e2',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 330,
+                    }}
+                    underlayColor='#ccc'
+                >
+                    <Icon
+                        name='add'
+                        color='#ef3a5d'
+                        size={40}
+                    />
+                </TouchableHighlight>
                 {
                     dataRdv != null && dataRdv?.map((item, key) => (
                         <View
@@ -58,26 +77,6 @@ const AgendaScreen = ({ navigation }: any) => {
                         </View>
                     ))
                 }
-                <TouchableHighlight
-                    style={{
-                        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-                        width: 50,
-                        height: 50,
-                        backgroundColor: '#e2e2e2',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 330,
-                        marginTop: 280
-                    }}
-                    underlayColor='#ccc'
-                >
-                    <Icon
-                        name='add'
-                        color='#ef3a5d'
-                        size={40}
-                    />
-
-                </TouchableHighlight>
             </ScrollView >
 
             <View>

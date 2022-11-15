@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }: any) => {
                 <ScrollView style={{ height: 1000 }}>
 
                     <Pressable onPress={() => navigation.navigate('Prospections')}>
-                        <CardDashboard title='Prospections' name={name.note}>
+                        <CardDashboard title='Projets en cours' name={name.note}>
                         </CardDashboard>
                     </Pressable>
 

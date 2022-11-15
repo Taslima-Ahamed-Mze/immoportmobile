@@ -55,36 +55,8 @@ const Prospections = ({ navigation }: any) => {
 
         <View style={{ flex: 1, padding: 10 }}>
             <HeaderComponent />
+            <Text style={{ color: '#f13d3d', fontFamily: 'HomemadeApple-Regular', marginTop: 15, textAlign: 'center', fontSize: 20 }}>Mes projets en cours</Text>
             <ScrollView>
-                <View>
-                    {
-                        dataProperty != null && dataProperty?.map((item, key) => (
-                            <TouchableOpacity
-                                key={key}
-                                onPress={() => navigation.navigate('DetailProspect', { data: item.id })}
-                            >
-                                <Card
-                                    containerStyle={{
-                                        borderColor: '#f13d3d',
-                                        borderWidth: 0.5,
-                                        borderStyle: "solid",
-                                        borderRadius: 5,
-                                        backgroundColor: 'white'
-                                    }}
-                                >
-                                    <View style={styles.cardComponent} >
-                                        <Text style={styles.text}>{item.name}</Text>
-                                        <Icon
-                                            name='delete'
-                                            color='#ef3a5d'
-                                        />
-                                    </View>
-                                </Card>
-                            </TouchableOpacity>
-                        ))
-                    }
-                </View>
-
                 <TouchableHighlight
                     style={{
                         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
@@ -94,7 +66,6 @@ const Prospections = ({ navigation }: any) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginLeft: 330,
-                        marginTop: 340
                     }}
                     underlayColor='#ccc'
                     onPress={() => navigation.navigate('Prospect')}
@@ -104,8 +75,33 @@ const Prospections = ({ navigation }: any) => {
                         color='#ef3a5d'
                         size={40}
                     />
-
                 </TouchableHighlight>
+                {
+                    dataProperty != null && dataProperty?.map((item, key) => (
+                        <TouchableOpacity
+                            key={key}
+                            onPress={() => navigation.navigate('DetailProspect', { data: item.id })}
+                        >
+                            <Card
+                                containerStyle={{
+                                    borderColor: '#f13d3d',
+                                    borderWidth: 0.5,
+                                    borderStyle: "solid",
+                                    borderRadius: 5,
+                                    backgroundColor: 'white'
+                                }}
+                            >
+                                <View style={styles.cardComponent} >
+                                    <Text style={styles.text}>{item.name}</Text>
+                                    <Icon
+                                        name='delete'
+                                        color='#ef3a5d'
+                                    />
+                                </View>
+                            </Card>
+                        </TouchableOpacity>
+                    ))
+                }
             </ScrollView>
             <View>
                 <FooterComponent />

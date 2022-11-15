@@ -10,6 +10,7 @@ const DocumentScreen = ({ navigation }: any) => {
         <View style={{ flex: 1,padding:10}}>
             <ScrollView>
                 <HeaderComponent />
+                <Text style={{ color: '#f13d3d', fontFamily: 'HomemadeApple-Regular', marginTop: 15, textAlign: 'center', fontSize: 20 }}>Mes documents</Text>
             </ScrollView>
             <View>
                 <FooterComponent />
