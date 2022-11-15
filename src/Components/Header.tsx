@@ -1,17 +1,19 @@
 import React from 'react';
-import { Header } from "@rneui/themed";
+import { Header, Image } from "@rneui/themed";
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import { getProfile } from '../Api/Auth';
 import AuthContext from '../Contexts/AuthContext';
 import Employee from '../Interfaces/Employee';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { StyleSheet } from 'react-native';
 
-const Avatar = () => {
-    return (
-        <FontAwesomeIcon icon={faUserCircle} color="#c51e1e" size={40} />
-    );
-}
+const styles = StyleSheet.create({
+    image: {
+        width: 65,
+        height: 65,
+        alignSelf: "center",
+    },
+})
+
 const HeaderComponent = () => {
 
     const MMKV = new MMKVLoader().initialize()
@@ -45,8 +47,11 @@ const HeaderComponent = () => {
             placement="center"
             backgroundColor='#e2e2e2'
             elevated
-            leftComponent={<Avatar />}
-            centerComponent={{ text: user.firstname + ' ' + user.lastname, style: { color: '#000000', fontWeight: '100', fontSize: 30 } }}
+            leftComponent={<Image
+                style={styles.image}
+                source={require('../../Assets/images/logo.png')}
+            />}
+            centerComponent={{ text: user.firstname + ' ' + user.lastname, style: { color: '#000000', fontSize: 25, fontFamily: 'HomemadeApple-Regular' } }}
         />
     );
 

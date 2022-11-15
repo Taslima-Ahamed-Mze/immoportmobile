@@ -1,5 +1,3 @@
-import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 import {
     StyleSheet,
@@ -17,7 +15,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 24,
         backgroundColor: 'white',
-        paddingVertical: 120
+        paddingVertical: 120,
     },
     image: {
         width: 150,
@@ -27,13 +25,11 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#f13d3d',
-        opacity: 0.9,
-        padding: 20,
+        padding: 10,
         flexDirection: 'row',
-        textAlign: 'center',
-        width: 200,
-        alignSelf: 'center',
-
+        borderRadius: 25,
+        width: 250,
+        alignSelf: 'center'
     },
     input: {
         height: 40,
@@ -47,14 +43,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: 'center',
         textTransform: 'uppercase',
-        letterSpacing: 4,
+        letterSpacing: 4
     },
     text: {
         color: "white",
-        fontSize: 20,
-        marginRight: 25,
-        textAlign: 'center',
+        fontSize: 18,
         textTransform: 'uppercase',
+        marginLeft: 55
     },
     inputError: {
         fontWeight: "bold",
@@ -66,7 +61,6 @@ const styles = StyleSheet.create({
         color: "red",
         marginTop: 20
     }
-
 })
 
 const LoginScreen = ({ navigation }: any) => {
@@ -130,7 +124,6 @@ const LoginScreen = ({ navigation }: any) => {
             <Pressable onPress={handleSubmit}>
                 <View style={styles.button}>
                     <Text style={styles.text}>Connexion</Text>
-                    <FontAwesomeIcon icon={faArrowRightToBracket} color="white" size={26} />
                 </View>
             </Pressable>
 

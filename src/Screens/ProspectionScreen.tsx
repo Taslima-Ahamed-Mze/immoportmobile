@@ -84,28 +84,29 @@ const Prospections = ({ navigation }: any) => {
                         ))
                     }
                 </View>
-            </ScrollView>
-            <TouchableHighlight
-                style={{
-                    borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-                    width: 50,
-                    height: 50,
-                    backgroundColor: '#e2e2e2',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginLeft: 330,
-                    marginBottom: 13
-                }}
-                underlayColor='#ccc'
-                onPress={() => navigation.navigate('Prospect')}
-            >
-                <Icon
-                    name='add'
-                    color='#ef3a5d'
-                    size={40}
-                />
 
-            </TouchableHighlight>
+                <TouchableHighlight
+                    style={{
+                        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+                        width: 50,
+                        height: 50,
+                        backgroundColor: '#e2e2e2',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 330,
+                        marginTop: 340
+                    }}
+                    underlayColor='#ccc'
+                    onPress={() => navigation.navigate('Prospect')}
+                >
+                    <Icon
+                        name='add'
+                        color='#ef3a5d'
+                        size={40}
+                    />
+
+                </TouchableHighlight>
+            </ScrollView>
             <View>
                 <FooterComponent />
             </View>

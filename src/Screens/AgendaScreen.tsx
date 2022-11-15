@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TouchableHighlight, Dimensions } from 'react-native';
 import HeaderComponent from '../Components/Header';
 import FooterComponent from '../Components/Footer';
 import RDV from '../Interfaces/Rdv';
 import { getEmployeeRdv } from '../Api/Rdv';
 import { MMKVLoader } from 'react-native-mmkv-storage';
-import { Card } from '@rneui/themed';
+import { Card, Icon } from '@rneui/themed';
 import { format, parseISO } from 'date-fns';
 
 const AgendaScreen = ({ navigation }: any) => {
@@ -46,7 +46,6 @@ const AgendaScreen = ({ navigation }: any) => {
                                     borderStyle: "solid",
                                     borderRadius: 5,
                                     backgroundColor: 'white'
-
                                 }}
                             >
                                 <Card.Title style={{ color: 'black', fontWeight: 'bold' }}>{format(parseISO(item.beginning), "dd-MM-yyyy")} - {item.label}</Card.Title>
@@ -59,6 +58,26 @@ const AgendaScreen = ({ navigation }: any) => {
                         </View>
                     ))
                 }
+                <TouchableHighlight
+                    style={{
+                        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+                        width: 50,
+                        height: 50,
+                        backgroundColor: '#e2e2e2',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginLeft: 330,
+                        marginTop: 280
+                    }}
+                    underlayColor='#ccc'
+                >
+                    <Icon
+                        name='add'
+                        color='#ef3a5d'
+                        size={40}
+                    />
+
+                </TouchableHighlight>
             </ScrollView >
 
             <View>
