@@ -26,11 +26,9 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     button: {
-        borderColor: 'red',
-        backgroundColor: '#e40909',
+        backgroundColor: '#f13d3d',
         opacity: 0.9,
-        padding: 15,
-        borderRadius: 10,
+        padding: 20,
         flexDirection: 'row',
         textAlign: 'center',
         width: 200,

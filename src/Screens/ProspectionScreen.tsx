@@ -58,8 +58,9 @@ const Prospections = ({ navigation }: any) => {
             <ScrollView>
                 <View>
                     {
-                        dataProperty != null && dataProperty?.map(item => (
+                        dataProperty != null && dataProperty?.map((item, key) => (
                             <TouchableOpacity
+                                key={key}
                                 onPress={() => navigation.navigate('DetailProspect', { data: item.id })}
                             >
                                 <Card
