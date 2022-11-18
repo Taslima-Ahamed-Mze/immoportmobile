@@ -49,7 +49,7 @@ const HeaderComponent = () => {
             elevated
             leftComponent={<Image
                 style={styles.image}
-                source={require('../../Assets/images/logo.png')}
+                source={require('../assets/images/logo.png')}
             />}
             centerComponent={{ text: user.firstname + ' ' + user.lastname, style: { color: '#000000', fontSize: 25, fontFamily: 'HomemadeApple-Regular' } }}
         />

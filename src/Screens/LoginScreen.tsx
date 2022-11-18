@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     formError: {
         fontWeight: "bold",
         color: "red",
-        marginTop: 20
+        marginBottom: 20
     }
 })
 
@@ -103,7 +103,7 @@ const LoginScreen = ({ navigation }: any) => {
 
             <Image
                 style={styles.image}
-                source={require('../../Assets/images/logo.png')}
+                source={require('../assets/images/logo.png')}
             />
             <Text style={styles.label}>Matricule</Text>
             <TextInput
@@ -121,14 +121,12 @@ const LoginScreen = ({ navigation }: any) => {
             />
             <Text style={styles.inputError}>{inputError?.password}</Text>
 
+            <Text style={styles.formError}>{formError}</Text>
             <Pressable onPress={handleSubmit}>
                 <View style={styles.button}>
                     <Text style={styles.text}>Connexion</Text>
                 </View>
             </Pressable>
-
-            <Text style={styles.formError}>{formError}</Text>
-
         </View>
 
     )
