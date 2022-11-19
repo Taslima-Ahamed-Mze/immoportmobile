@@ -67,7 +67,8 @@ const AgendaScreen = ({ navigation }: any) => {
                                     backgroundColor: 'white'
                                 }}
                             >
-                                <Card.Title style={{ color: 'black', fontWeight: 'bold' }}>{format(parseISO(item.beginning), "dd-MM-yyyy")} - {item.label}</Card.Title>
+                                <Card.Title style={{ color: 'black', fontWeight: 'bold' }}>{format(parseISO(item.beginning), "dd-MM-yyyy")} - {format(parseISO(item.beginning), "HH:mm")} | {item.label}
+                                </Card.Title>
                                 <Card.Divider />
                                 <View>
                                     <Text style={{ color: 'black' }}>{item.firstname} {item.lastname} - {item.phone}</Text>
